@@ -21,7 +21,7 @@ We need to keep track of all the changes in the components, for this we need to 
 - [PROJ-ZZZ](TICKET_URL) <Description of the change> ->  And ticket URL
 ```
 
-**ejemplo:**
+**Example:**
 
 ```
 [0.1.0](https://github.com/TEAMVALLESOFT/Back_Inventory/pull-requests/1) (2021-03-14)
