@@ -39,5 +39,7 @@ _**Development testing and quality control:**_ When the developer is sure to pro
 ### 4. Who can merge branches?
 
 _**BE leader:** Juan David González - [TOYCRESJDGM](https://github.com/TOYCRESJDGM)_
+
 _**FE leader:** Natalia Vargas - [vargas-ins](https://github.com/vargas-ins)_
+
 _**Project manager:** Natalia Rodríguez - [NataliaRodriguez98](https://github.com/NataliaRodriguez98)_ 
