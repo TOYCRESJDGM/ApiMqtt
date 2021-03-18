@@ -4,7 +4,7 @@
 ### 1. Creating a branch
 When it is time to start a task, you must create a new branch based on the main one, its name must follow the following pattern:
 ```
-<BRANCH_TYPE>/<TICKET_ID>-<SHORT_NAME>
+<BRANCH_TYPE>/<PROJECT_KEY>-<TICKET_ID>
 ```
 Types of branches:
 
@@ -35,3 +35,9 @@ Ensuring that the changes work as expected is a two-step process:
 _**Local tests:** Each developer must test the changes on their machines._
 
 _**Development testing and quality control:**_ When the developer is sure to promote the changes, they must create a PR, must be approved by other teammates and finally merged using ```--squash.```
+
+### 4. Who can merge branches?
+
+_**BE leader:** Juan David González - [TOYCRESJDGM](https://github.com/TOYCRESJDGM)_
+_**FE leader:** Natalia Vargas - [vargas-ins](https://github.com/vargas-ins)_
+_**Project manager:** Natalia Rodríguez - [NataliaRodriguez98](https://github.com/NataliaRodriguez98)_ 
