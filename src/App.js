@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
-// import LoginView from './Components/LoginView/LoginView'
-// import MenuView from './Components/MenuOptions/MenuView'
+import LoginView from './Components/Login/LoginView'
 import './App.css'
 
 class App extends Component {
@@ -10,7 +9,7 @@ class App extends Component {
   }
 
   render() {
-    return <div> </div>
+    return <LoginView />
   }
 }
 
