@@ -1,0 +1,152 @@
+/* LOGIN HEADER */
+.lg-header {
+  width: 100%;
+  height: 48px;
+  padding-left: 20px;
+  border-left: var(--scout-red) solid 5px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.lg-title {
+  color: var(--title-gray);
+  font-size: 20px;
+  margin-bottom: 5px;
+}
+
+.lg-text {
+  color: var(--body-gray);
+  font-size: 12px;
+}
+
+/* LOGIN FORM */
+.lg-form {
+  width: 100%;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+}
+
+.lg-label {
+  color: var(--title-gray);
+  font-size: 13px;
+}
+
+.lg-input-group {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  margin-top: 5px;
+}
+
+.lg-input {
+  height: 30px;
+  width: 100%;
+  padding: 0px 10px;
+  margin-bottom: 20px;
+  outline: none;
+  color: var(--body-gray);
+  font-size: 12px;
+  border: 1px solid var(--background);
+  transition: border 0.3s;
+}
+
+.lg-img-container {
+  height: 32px;
+  width: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--background);
+}
+
+.lg-img {
+  height: 20px;
+  width: 20px;
+}
+
+.lg-button {
+  height: 40px;
+  width: 100%;
+  border-radius: 5px;
+  color: var(--white);
+  font-size: 14px;
+  outline: none;
+  background-color: var(--scout-red);
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.lg-button:hover {
+  background-color: var(--scout-red-hover);
+}
+
+/* LOGIN LEGEND */
+hr {
+  width: 100px;
+  border-width: 0px;
+  border-top: var(--soft-gray) solid 1px;
+}
+
+.lg-legend-group {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-around;
+  margin-top: 30px;
+  margin-bottom: 23px;
+}
+
+.lg-logo-container {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+
+.lg-logo {
+  width: 323px;
+  height: 80px;
+}
+
+/* LOGIN OTHERS */
+.lg-container {
+  width: 100vw;
+  height: 100vh;
+  min-width: 546px;
+  min-height: 570px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--background);
+}
+
+.lg-card {
+  width: 520px;
+  height: 542px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--white);
+}
+
+.lg-content {
+  margin: 50px 60px;
+  width: 100%;
+  height: -webkit-fill-available;
+  display: flex;
+  flex-direction: column;
+}
+
+.lg-link {
+  width: 100%;
+  font-size: 11px;
+  text-align: center;
+  color: var(--link-blue);
+}

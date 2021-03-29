@@ -1,0 +1,27 @@
+/* COLORS */
+:root {
+  --scout-red: #b31d1d;
+  --scout-red-hover: #db2424;
+  --title-gray: #646777;
+  --body-gray: #999999;
+  --background: #f2f4f7;
+  --link-blue: #70bcfd;
+  --white: #ffffff;
+  --soft-gray: #dddddd;
+}
+
+body {
+  margin: 0;
+  font-family: 'Roboto', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+input:focus {
+  border: 1px solid var(--body-gray);
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
