@@ -5,6 +5,7 @@
     "node": true
   },
   "extends": "plugin:react/recommended",
+  "parser": "@babel/eslint-parser",
   "parserOptions": {
     "ecmaFeatures": {
       "jsx": true
@@ -12,6 +13,16 @@
     "ecmaVersion": 12,
     "sourceType": "module"
   },
+  "presets": [
+    [
+      "@babel/env",
+      {
+        "targets": {
+          "node": "12"
+        }
+      }
+    ]
+  ],
   "plugins": ["react"],
   "rules": {
     "react/react-in-jsx-scope": "off",
