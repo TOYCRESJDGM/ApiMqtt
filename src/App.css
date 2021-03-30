@@ -8,6 +8,12 @@
   --link-blue: #70bcfd;
   --white: #ffffff;
   --soft-gray: #dddddd;
+
+  /* Alerts */
+  --information: #70bbfd;
+  --attention: #f6da6e;
+  --success: #4ce1b6;
+  --error: #ff4861;
 }
 
 body {

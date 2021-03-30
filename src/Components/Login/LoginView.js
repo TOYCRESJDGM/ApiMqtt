@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import './Styles.css'
 
+import Alert from '../Alerts/Alert'
 import { postRequest } from '../../Functions/Post'
 
 class LoginView extends Component {
@@ -9,6 +10,7 @@ class LoginView extends Component {
     this.state = {
       email: '',
       password: '',
+      error: false,
     }
   }
 
@@ -31,6 +33,10 @@ class LoginView extends Component {
     return
   }
 
+  handleError = (event) => {
+    this.setState({ error: false })
+  }
+
   handleChange = (event) => {
     let attribute = event.target.id
     let value = event.target.value
@@ -39,20 +45,45 @@ class LoginView extends Component {
   }
 
   responseHandler = (response, body) => {
-    // console.log(response)
-    // console.log(body)
+    if (response == 'success' && body.hasOwnProperty('token')) {
+      sessionStorage.setItem('token', body.token)
+      localStorage.setItem('user_id', body.user.id)
+      localStorage.setItem('user_name', body.user.name)
+      localStorage.setItem('user_email', body.user.email)
 
-    sessionStorage.setItem('token', 'value')
-    this.props.changeView('Menu')
+      this.props.changeView('Menu')
+      return
+    }
+
+    this.setState({ error: true })
+    return
   }
 
   login = () => {
-    postRequest('user/login', this.state, this.responseHandler)
+    let body = {
+      email: this.state.email,
+      password: this.state.password,
+    }
+
+    postRequest('user/login', body, this.responseHandler)
   }
 
   render() {
+    let alert = ''
+
+    if (this.state.error) {
+      alert = (
+        <Alert
+          type='attention'
+          text='Su correo electrónico o contraseña es incorrecta. Por favor, intente de nuevo.'
+          handleError={this.handleError}
+        />
+      )
+    }
+
     return (
       <div className='lg-container'>
+        {alert}
         <div className='lg-card'>
           <div className='lg-content'>
             {/* HEADER */}

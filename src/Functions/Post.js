@@ -18,8 +18,8 @@ export function postRequest(path, data, responseHandler) {
       'Content-Type': 'application/json',
     },
   })
-    .then((res) => res.json())
     .then(handleErrors)
+    .then((res) => res.json())
     .then((response) => responseHandler('success', response))
     .catch((error) => responseHandler('error', error))
 }
