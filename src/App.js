@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
-// import LoginView from './Components/Login/LoginView'
-import MenuView from './Components/Menu/MenuView'
+import LoginView from './Components/Login/LoginView'
+// import MenuView from './Components/Menu/MenuView'
 import './App.css'
 
 class App extends Component {
@@ -10,7 +10,7 @@ class App extends Component {
   }
 
   render() {
-    return <MenuView />
+    return <LoginView />
   }
 }
 
