@@ -18,16 +18,44 @@ class MenuView extends Component {
     this.setState({ selected: newID })
   }
 
+  showUserMenu() {
+    let visibility = document.getElementById('logout').style.visibility
+
+    if (visibility == 'visible') {
+      document.getElementById('logout').style.visibility = 'hidden'
+      return
+    }
+
+    document.getElementById('logout').style.visibility = 'visible'
+    return
+  }
+
+  logout = () => {
+    sessionStorage.clear()
+    this.props.changeView('login')
+
+    return
+  }
+
   render() {
     return (
       <div className='m-container'>
+        <div
+          id='logout'
+          className='m-close-session'
+          style={{ visibility: 'hidden' }}
+          onClick={this.logout}
+        >
+          <img className='m-icon' src='./logout_gray.png' alt='logout' />
+          <span className='m-label'>Cerrar sessión</span>
+        </div>
         {/* HEADER */}
         <div className='m-header'>
           <div className='m-logo-container'>
             <img className='m-logo' src='./logo-scouts.png' alt='logo' />
             <span className='m-label'>Grupo Scout Centinelas 113</span>
           </div>
-          <div className='m-loged-user-container'>
+          <div className='m-loged-user-container' onClick={this.showUserMenu}>
             <div className='m-ellipse'></div>
             <span className='m-user-name'>Nombre Apellido</span>
             <img className='m-icon' src='./arrow_gray.png' alt='arrow' />

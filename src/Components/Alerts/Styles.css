@@ -1,3 +1,4 @@
+/* ALERT STYLES */
 .a-container {
   position: absolute;
   right: 20px;
@@ -44,6 +45,7 @@
   justify-content: center;
 }
 
+/* ALERT TYPES COLORS */
 .attention-border {
   border: 1px solid var(--attention);
 }
@@ -52,11 +54,7 @@
   background-color: var(--attention);
 }
 
-p {
-  animation-duration: 3s;
-  animation-name: slidein;
-}
-
+/* ALERT ANIMATIONS */
 @keyframes fadein {
   from {
     opacity: 0;
