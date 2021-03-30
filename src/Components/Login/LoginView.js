@@ -1,6 +1,8 @@
 import React, { Component } from 'react'
 import './Styles.css'
 
+import { postRequest } from '../../Functions/Post'
+
 class LoginView extends Component {
   constructor() {
     super()
@@ -14,7 +16,7 @@ class LoginView extends Component {
   showPasswd() {
     let container = document.getElementById('eye-icon-container')
     let icon = document.getElementById('eye-icon')
-    let input = document.getElementById('passwd')
+    let input = document.getElementById('password')
 
     if (input.attributes.type.value == 'password') {
       input.attributes.type.value = 'text'
@@ -27,6 +29,25 @@ class LoginView extends Component {
     }
 
     return
+  }
+
+  handleChange = (event) => {
+    let attribute = event.target.id
+    let value = event.target.value
+
+    this.setState({ [attribute]: value })
+  }
+
+  responseHandler = (response, body) => {
+    // console.log(response)
+    // console.log(body)
+
+    sessionStorage.setItem('token', 'value')
+    this.props.changeView('Menu')
+  }
+
+  login = () => {
+    postRequest('user/login', this.state, this.responseHandler)
   }
 
   render() {
@@ -54,14 +75,26 @@ class LoginView extends Component {
                     alt='person'
                   />
                 </div>
-                <input className='lg-input' type='email' />
+                <input
+                  id='email'
+                  className='lg-input'
+                  type='email'
+                  value={this.state.email}
+                  onChange={this.handleChange}
+                />
               </div>
               <span className='lg-label'>Contraseña</span>
               <div className='lg-input-group'>
                 <div className='lg-img-container'>
                   <img className='lg-img' src='./key_gray.png' alt='key' />
                 </div>
-                <input id='passwd' className='lg-input' type='password' />
+                <input
+                  id='password'
+                  className='lg-input'
+                  type='password'
+                  value={this.state.password}
+                  onChange={this.handleChange}
+                />
                 <div
                   id='eye-icon-container'
                   className='lg-img-container'
@@ -76,7 +109,9 @@ class LoginView extends Component {
                   />
                 </div>
               </div>
-              <button className='lg-button'>Iniciar sesión</button>
+              <button className='lg-button' onClick={this.login}>
+                Iniciar sesión
+              </button>
             </div>
             <span className='lg-link'>¿Olvidaste tu contraseña?</span>
             {/* LEGEND */}
