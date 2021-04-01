@@ -1,4 +1,4 @@
-let HOST = 'http://localhost:3000/api/'
+const HOST = 'http://localhost:3000/api/'
 
 function handleErrors(response) {
   if (!response.ok) {
@@ -6,6 +6,10 @@ function handleErrors(response) {
   }
   return response
 }
+
+// SERVICES
+export const LOGIN = 'user/login'
+export const CREATE_USER = 'user/create'
 
 // SIMPLE POST REQUES
 export function postRequest(path, data, responseHandler) {

@@ -4,7 +4,7 @@ import './Styles.css'
 class Alert extends Component {
   closeAlert = () => {
     document.getElementById('alert').style.display = 'none'
-    this.props.handleError()
+    this.props.close()
 
     return
   }
@@ -13,29 +13,22 @@ class Alert extends Component {
     let type = this.props.type
     let text = this.props.text
 
-    switch (type) {
-      case 'attention':
-        return (
-          <div id='alert' className='a-container attention-border'>
-            <div className='a-icon-container attention-background'>
-              <img
-                className='a-icon'
-                src='./attention_white.png'
-                alt='attention'
-              />
-            </div>
-            <div className='a-body-container'>{text}</div>
-            <div className='a-close-container'>
-              <img
-                className='a-icon'
-                src='./close_gray.png'
-                alt='attention'
-                onClick={this.closeAlert}
-              />
-            </div>
-          </div>
-        )
-    }
+    return (
+      <div id='alert' className={'a-container ' + type + '-border'}>
+        <div className={'a-icon-container ' + type + '-background'}>
+          <img className='a-icon' src={'./' + type + '_white.png'} alt={type} />
+        </div>
+        <div className='a-body-container'>{text}</div>
+        <div className='a-close-container'>
+          <img
+            className='a-icon'
+            src='./close_gray.png'
+            alt='close'
+            onClick={this.closeAlert}
+          />
+        </div>
+      </div>
+    )
   }
 }
 
