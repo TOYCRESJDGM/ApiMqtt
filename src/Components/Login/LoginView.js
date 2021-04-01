@@ -3,6 +3,7 @@ import './Styles.css'
 
 import Alert from '../Alerts/Alert'
 import { postRequest } from '../../Functions/Post'
+import { LOGIN } from '../../Functions/Post'
 
 class LoginView extends Component {
   constructor() {
@@ -65,7 +66,7 @@ class LoginView extends Component {
       password: this.state.password,
     }
 
-    postRequest('user/login', body, this.responseHandler)
+    postRequest(LOGIN, body, this.responseHandler)
   }
 
   render() {
@@ -76,7 +77,7 @@ class LoginView extends Component {
         <Alert
           type='attention'
           text='Su correo electrónico o contraseña es incorrecta. Por favor, intente de nuevo.'
-          handleError={this.handleError}
+          close={this.handleError}
         />
       )
     }

@@ -141,3 +141,24 @@ code {
 .global-form-outline-button:hover {
   box-shadow: 3px 6px 6px #00000029;
 }
+
+.global-form-input-select {
+  height: 33px;
+  width: 100%;
+  padding: 0px 10px;
+  outline: none;
+  color: var(--body-gray);
+  font-size: 12px;
+  border: 1px solid var(--background);
+  transition: border 0.3s;
+  cursor: pointer;
+}
+
+.global-form-group-checkbox {
+  width: -webkit-fill-available;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-bottom: 20px;
+  margin-left: 145px;
+}
