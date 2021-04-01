@@ -97,44 +97,56 @@ class LoginView extends Component {
             </div>
             {/* FORM */}
             <div className='lg-form'>
-              <span className='lg-label'>Correo electrónico</span>
-              <div className='lg-input-group'>
-                <div className='lg-img-container'>
+              <span className='global-form-label'>Correo electrónico</span>
+              <div
+                className='global-form-input-group'
+                style={{ marginTop: '5px' }}
+              >
+                <div className='global-form-img-container'>
                   <img
-                    className='lg-img'
+                    className='global-form-img'
                     src='./person_gray.png'
                     alt='person'
                   />
                 </div>
                 <input
                   id='email'
-                  className='lg-input'
+                  className='global-form-input'
                   type='email'
+                  style={{ marginBottom: '20px' }}
                   value={this.state.email}
                   onChange={this.handleChange}
                 />
               </div>
-              <span className='lg-label'>Contraseña</span>
-              <div className='lg-input-group'>
-                <div className='lg-img-container'>
-                  <img className='lg-img' src='./key_gray.png' alt='key' />
+              <span className='global-form-label'>Contraseña</span>
+              <div
+                className='global-form-input-group'
+                style={{ marginTop: '5px' }}
+              >
+                <div className='global-form-img-container'>
+                  <img
+                    className='global-form-img'
+                    src='./key_gray.png'
+                    alt='key'
+                  />
                 </div>
                 <input
                   id='password'
-                  className='lg-input'
+                  className='global-form-input'
                   type='password'
+                  style={{ marginBottom: '20px' }}
                   value={this.state.password}
                   onChange={this.handleChange}
                 />
                 <div
                   id='eye-icon-container'
-                  className='lg-img-container'
+                  className='global-form-img-container'
                   style={{ cursor: 'pointer' }}
                   onClick={this.showPasswd}
                 >
                   <img
                     id='eye-icon'
-                    className='lg-img'
+                    className='global-form-img'
                     src='./eye_gray.png'
                     alt='eye'
                   />
@@ -148,7 +160,7 @@ class LoginView extends Component {
             {/* LEGEND */}
             <div className='lg-legend-group'>
               <hr></hr>
-              <span className='lg-label'>Desarrollado por</span>
+              <span className='global-form-label'>Desarrollado por</span>
               <hr></hr>
             </div>
             <div className='lg-logo-container'>

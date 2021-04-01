@@ -1,6 +1,8 @@
 import React, { Component } from 'react'
 import './Styles.css'
 
+import CreateUser from '../Users/CreateUser'
+
 class MenuView extends Component {
   constructor() {
     super()
@@ -10,7 +12,7 @@ class MenuView extends Component {
   }
 
   changeSelected = (event) => {
-    let newID = event.target.id
+    let newID = parseInt(event.target.id)
 
     document.getElementById(this.state.selected).className = 'm-menu-label'
     document.getElementById(newID).className = 'm-menu-label selected'
@@ -37,7 +39,19 @@ class MenuView extends Component {
     return
   }
 
+  getSubComponent() {
+    switch (this.state.selected) {
+      case 2:
+        return <CreateUser />
+      default:
+        return <div></div>
+    }
+  }
+
   render() {
+    let component = this.getSubComponent()
+    let name = localStorage.getItem('user_name')
+
     return (
       <div className='m-container'>
         <div
@@ -56,8 +70,8 @@ class MenuView extends Component {
             <span className='m-label'>Grupo Scout Centinelas 113</span>
           </div>
           <div className='m-loged-user-container' onClick={this.showUserMenu}>
-            <div className='m-ellipse'></div>
-            <span className='m-user-name'>Nombre Apellido</span>
+            <div className='m-ellipse'>{name[0]}</div>
+            <span className='m-user-name'>{name}</span>
             <img className='m-icon' src='./arrow_gray.png' alt='arrow' />
           </div>
         </div>
@@ -177,7 +191,8 @@ class MenuView extends Component {
               </div>
             </div>
           </div>
-          <div className='m-component-container'></div>
+          {/* SUB COMPONENT */}
+          <div className='m-component-container'>{component}</div>
         </div>
       </div>
     )
