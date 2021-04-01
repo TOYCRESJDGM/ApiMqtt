@@ -31,3 +31,113 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+.global-comp-title {
+  font-size: 20px;
+  color: var(--title-gray);
+  margin-bottom: 10px;
+}
+
+.global-comp-description {
+  font-size: 14px;
+  color: var(--body-gray);
+  margin-bottom: 20px;
+}
+
+.global-comp-form-container {
+  width: -webkit-fill-available;
+  padding: 20px 15px;
+  background-color: var(--white);
+}
+
+.global-form-group {
+  width: -webkit-fill-available;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.global-form-label {
+  width: 150px;
+  min-width: 150px;
+  font-size: 13px;
+  color: var(--title-gray);
+}
+
+.global-form-mandatory {
+  font-size: 13px;
+  color: var(--scout-red);
+}
+
+.global-form-input-group {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+}
+
+.global-form-input {
+  height: 30px;
+  width: 100%;
+  padding: 0px 10px;
+  outline: none;
+  color: var(--body-gray);
+  font-size: 12px;
+  border: 1px solid var(--background);
+  transition: border 0.3s;
+}
+
+.global-form-img-container {
+  height: 32px;
+  width: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--background);
+}
+
+.global-form-img {
+  height: 20px;
+  width: 20px;
+}
+
+.global-form-buttons-container {
+  display: flex;
+  flex-direction: row;
+  margin-left: 150px;
+}
+
+.global-form-solid-button {
+  height: 40px;
+  width: 100px;
+  border-radius: 5px;
+  color: var(--white);
+  font-size: 14px;
+  outline: none;
+  background-color: var(--scout-red);
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.global-form-solid-button:hover {
+  box-shadow: 3px 6px 6px #00000029;
+}
+
+.global-form-outline-button {
+  height: 40px;
+  width: 100px;
+  border-radius: 5px;
+  color: var(--scout-red);
+  font-size: 14px;
+  outline: none;
+  background-color: var(--white);
+  border: 1px solid var(--scout-red);
+  cursor: pointer;
+  margin-left: 15px;
+  transition: all 0.3s;
+}
+
+.global-form-outline-button:hover {
+  box-shadow: 3px 6px 6px #00000029;
+}
