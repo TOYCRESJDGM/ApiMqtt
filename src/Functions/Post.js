@@ -10,6 +10,7 @@ function handleErrors(response) {
 // SERVICES
 export const LOGIN = 'user/login'
 export const CREATE_USER = 'user/create'
+export const CREATE_WAREHOUSE = 'warehouse/create'
 
 // SIMPLE POST REQUES
 export function postRequest(path, data, responseHandler) {

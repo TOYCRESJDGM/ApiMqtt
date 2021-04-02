@@ -1,5 +1,4 @@
 import React, { Component} from 'react'
-import './Styles.css'
 
 class CreateArticleType extends Component {
   constructor() {
