@@ -3,6 +3,7 @@ import './Styles.css'
 
 import CreateUser from '../Users/CreateUser'
 import CreateArticleType from '../ArticleType/CreateArticleType'
+import CreateWarehouse from '../Warehouses/CreateWarehouse'
 
 class MenuView extends Component {
   constructor() {
@@ -44,6 +45,8 @@ class MenuView extends Component {
     switch (this.state.selected) {
       case 2:
         return <CreateUser />
+      case 3:
+        return <CreateWarehouse />
       case 4:
         return <CreateArticleType />
       default:
