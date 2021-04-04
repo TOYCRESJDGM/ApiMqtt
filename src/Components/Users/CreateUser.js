@@ -3,6 +3,7 @@ import './Styles.css'
 
 import Alert from '../Alerts/Alert'
 
+import { validateEmail } from '../../Functions/Helpers'
 import { postRequest } from '../../Functions/Post'
 import { CREATE_USER } from '../../Functions/Post'
 
@@ -17,6 +18,7 @@ class CreateUser extends Component {
       password: '',
       password_check: '',
       alert: '',
+      timeout: '',
     }
   }
 
@@ -54,63 +56,87 @@ class CreateUser extends Component {
     this.setState({ alert: '' })
   }
 
-  buildAlert(type, text) {
-    return <Alert type={type} text={text} close={this.close} />
-  }
-
-  // Functions related to requests
-  responseHandler = (response, body) => {
-    if (response == 'success') {
-      this.setState({
-        alert: this.buildAlert('success', 'Usuario creado con éxito.'),
-      })
-
-      this.clearInputs()
-      return
-    }
-
-    if (body.message == 'Conflict') {
-      this.setState({
-        alert: this.buildAlert(
-          'attention',
-          'Este usuario ya ha sido creado. Pruebe con un nuevo correo.'
-        ),
-      })
-
-      return
-    }
+  buildAlert = (type, text) => {
+    clearTimeout(this.state.timeout)
 
     this.setState({
-      alert: this.buildAlert(
-        'error',
-        'Ha ocurrido un error. Por favor intente más tarde.'
-      ),
+      timeout: setTimeout(() => this.setState({ alert: '' }), 6000),
+    })
+
+    this.setState({
+      alert: <Alert type={type} text={text} close={this.close} />,
     })
 
     return
   }
 
+  // Functions related to requests
+  responseHandler = (response, body) => {
+    if (response == 'success') {
+      this.buildAlert('success', 'Usuario creado con éxito.')
+      this.clearInputs()
+
+      return
+    }
+
+    if (body.message == 'Conflict') {
+      this.buildAlert(
+        'attention',
+        'Este usuario ya ha sido creado. Pruebe con un nuevo correo.'
+      )
+
+      return
+    }
+
+    this.buildAlert(
+      'error',
+      'Ha ocurrido un error. Por favor intente más tarde.'
+    )
+
+    return
+  }
+
   createUser = () => {
+    this.close()
+
     // Verify that the required fields are filled
     if (!this.checkMandatoryInputs()) {
-      this.setState({
-        alert: this.buildAlert(
-          'attention',
-          'Verifique que ha llenado todos los campos obligatorios.'
-        ),
-      })
+      setTimeout(
+        () =>
+          this.buildAlert(
+            'attention',
+            'Verifique que ha llenado todos los campos obligatorios.'
+          ),
+        10
+      )
+
+      return
+    }
+
+    // Verify that the email format is valid
+    if (!validateEmail(this.state.email)) {
+      setTimeout(
+        () =>
+          this.buildAlert(
+            'attention',
+            'El formato del correo electrónico no es válido. Por favor verifique.'
+          ),
+        10
+      )
 
       return
     }
 
     // Verify that the password has been entered correctly
     if (this.state.password != this.state.password_check) {
-      this.setState({
-        alert: this.buildAlert(
-          'attention',
-          'Las contraseñas no coinciden. Por favor, verifíquelas.'
-        ),
-      })
+      setTimeout(
+        () =>
+          this.buildAlert(
+            'attention',
+            'Las contraseñas no coinciden. Por favor, verifíquelas.'
+          ),
+        10
+      )
 
       return
     }
@@ -247,7 +273,7 @@ class CreateUser extends Component {
               value={this.state.branch}
               onChange={this.handleChange}
             >
-              <option value='' selected='true' disabled='disabled'>
+              <option value='' selected={true} disabled='disabled'>
                 Seleccione una rama...
               </option>
               <option value='Cachorros'>Cachorros</option>
