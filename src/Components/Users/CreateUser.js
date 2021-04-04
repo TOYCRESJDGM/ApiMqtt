@@ -2,10 +2,15 @@ import React, { Component } from 'react'
 import './Styles.css'
 
 import Alert from '../Alerts/Alert'
-
 import { validateEmail } from '../../Functions/Helpers'
 import { postRequest } from '../../Functions/Post'
-import { CREATE_USER } from '../../Functions/Post'
+import {
+  CREATE_USER,
+  MANDATORY_MESSAGE,
+  EMAIL_MESSAGE,
+  ERROR_MESSAGE,
+  ALERT_TIMEOUT,
+} from '../../Functions/Constants'
 
 class CreateUser extends Component {
   constructor() {
@@ -60,7 +65,7 @@ class CreateUser extends Component {
     clearTimeout(this.state.timeout)
 
     this.setState({
-      timeout: setTimeout(() => this.setState({ alert: '' }), 6000),
+      timeout: setTimeout(() => this.setState({ alert: '' }), ALERT_TIMEOUT),
     })
 
     this.setState({
@@ -88,10 +93,7 @@ class CreateUser extends Component {
       return
     }
 
-    this.buildAlert(
-      'error',
-      'Ha ocurrido un error. Por favor intente más tarde.'
-    )
+    this.buildAlert('error', ERROR_MESSAGE)
 
     return
   }
@@ -101,28 +103,14 @@ class CreateUser extends Component {
 
     // Verify that the required fields are filled
     if (!this.checkMandatoryInputs()) {
-      setTimeout(
-        () =>
-          this.buildAlert(
-            'attention',
-            'Verifique que ha llenado todos los campos obligatorios.'
-          ),
-        10
-      )
+      setTimeout(() => this.buildAlert('attention', MANDATORY_MESSAGE), 10)
 
       return
     }
 
     // Verify that the email format is valid
     if (!validateEmail(this.state.email)) {
-      setTimeout(
-        () =>
-          this.buildAlert(
-            'attention',
-            'El formato del correo electrónico no es válido. Por favor verifique.'
-          ),
-        10
-      )
+      setTimeout(() => this.buildAlert('attention', EMAIL_MESSAGE), 10)
 
       return
     }
@@ -283,12 +271,6 @@ class CreateUser extends Component {
               <option value='Rovers'>Rovers</option>
               <option value='Sin rama'>Sin rama</option>
             </select>
-            {/* <input
-              id='branch'
-              className='global-form-input'
-              value={this.state.branch}
-              onChange={this.handleChange}
-            /> */}
           </div>
 
           <div className='global-form-group'>

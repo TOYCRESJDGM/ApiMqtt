@@ -4,7 +4,12 @@ import './Styles.css'
 import Alert from '../Alerts/Alert'
 import { validateEmail } from '../../Functions/Helpers'
 import { postRequest } from '../../Functions/Post'
-import { LOGIN } from '../../Functions/Post'
+import {
+  LOGIN,
+  ERROR_MESSAGE,
+  EMAIL_MESSAGE,
+  ALERT_TIMEOUT,
+} from '../../Functions/Constants'
 
 class LoginView extends Component {
   constructor() {
@@ -38,7 +43,7 @@ class LoginView extends Component {
     clearTimeout(this.state.timeout)
 
     this.setState({
-      timeout: setTimeout(() => this.setState({ alert: '' }), 6000),
+      timeout: setTimeout(() => this.setState({ alert: '' }), ALERT_TIMEOUT),
     })
 
     this.setState({
@@ -69,10 +74,7 @@ class LoginView extends Component {
       return
     }
 
-    this.buildAlert(
-      'error',
-      'Ha ocurrido un error. Por favor intente más tarde.'
-    )
+    this.buildAlert('error', ERROR_MESSAGE)
 
     return
   }
@@ -96,14 +98,7 @@ class LoginView extends Component {
 
     // Verify that the required fields are filled
     if (!validateEmail(this.state.email)) {
-      setTimeout(
-        () =>
-          this.buildAlert(
-            'attention',
-            'El formato del correo electrónico no es válido. Por favor verifique.'
-          ),
-        10
-      )
+      setTimeout(() => this.buildAlert('attention', EMAIL_MESSAGE), 10)
 
       return
     }
