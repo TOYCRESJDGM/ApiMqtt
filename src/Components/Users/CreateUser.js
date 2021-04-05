@@ -35,10 +35,10 @@ class CreateUser extends Component {
 
     if (attribute == 'phone') {
       value = value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1')
-    }
-
-    if (attribute == 'email') {
+    } else if (attribute == 'email') {
       value = value.toLowerCase()
+    } else if (attribute == 'user_name') {
+      value = value.toUpperCase()
     }
 
     return this.setState({ [attribute]: value })
