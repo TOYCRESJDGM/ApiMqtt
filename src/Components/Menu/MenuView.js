@@ -19,7 +19,7 @@ class MenuView extends Component {
     document.getElementById(this.state.selected).className = 'm-menu-label'
     document.getElementById(newID).className = 'm-menu-label selected'
 
-    this.setState({ selected: newID })
+    return this.setState({ selected: newID })
   }
 
   showUserMenu() {
@@ -35,10 +35,8 @@ class MenuView extends Component {
   }
 
   logout = () => {
-    sessionStorage.clear()
     this.props.changeView('login')
-
-    return
+    return sessionStorage.clear()
   }
 
   getSubComponent() {

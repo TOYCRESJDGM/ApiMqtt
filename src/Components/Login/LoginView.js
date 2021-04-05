@@ -31,12 +31,12 @@ class LoginView extends Component {
       value = value.toLowerCase()
     }
 
-    this.setState({ [attribute]: value })
+    return this.setState({ [attribute]: value })
   }
 
   // Functions to handle alerts
   close = () => {
-    this.setState({ alert: '' })
+    return this.setState({ alert: '' })
   }
 
   buildAlert = (type, text) => {
@@ -46,11 +46,9 @@ class LoginView extends Component {
       timeout: setTimeout(() => this.setState({ alert: '' }), ALERT_TIMEOUT),
     })
 
-    this.setState({
+    return this.setState({
       alert: <Alert type={type} text={text} close={this.close} />,
     })
-
-    return
   }
 
   // Functions related to requests
@@ -61,22 +59,17 @@ class LoginView extends Component {
       localStorage.setItem('user_name', body.user.name)
       localStorage.setItem('user_email', body.user.email)
 
-      this.props.changeView('Menu')
-      return
+      return this.props.changeView('Menu')
     }
 
     if (body == 'Error: Not Found') {
-      this.buildAlert(
+      return this.buildAlert(
         'attention',
         'El correo electrónico o la contraseña es incorrecta. Por favor intente de nuevo.'
       )
-
-      return
     }
 
-    this.buildAlert('error', ERROR_MESSAGE)
-
-    return
+    return this.buildAlert('error', ERROR_MESSAGE)
   }
 
   login = () => {
@@ -92,14 +85,12 @@ class LoginView extends Component {
           ),
         10
       )
-
       return
     }
 
     // Verify that the required fields are filled
     if (!validateEmail(this.state.email)) {
       setTimeout(() => this.buildAlert('attention', EMAIL_MESSAGE), 10)
-
       return
     }
 
@@ -108,7 +99,7 @@ class LoginView extends Component {
       password: this.state.password,
     }
 
-    postRequest(LOGIN, body, this.responseHandler)
+    return postRequest(LOGIN, body, this.responseHandler)
   }
 
   // Auxiliary functions

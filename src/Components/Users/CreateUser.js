@@ -41,11 +41,11 @@ class CreateUser extends Component {
       value = value.toLowerCase()
     }
 
-    this.setState({ [attribute]: value })
+    return this.setState({ [attribute]: value })
   }
 
   clearInputs = () => {
-    this.setState({
+    return this.setState({
       email: '',
       user_name: '',
       branch: '',
@@ -53,13 +53,11 @@ class CreateUser extends Component {
       password: '',
       password_check: '',
     })
-
-    return
   }
 
   // Functions to handle alerts
   close = () => {
-    this.setState({ alert: '' })
+    return this.setState({ alert: '' })
   }
 
   buildAlert = (type, text) => {
@@ -69,34 +67,26 @@ class CreateUser extends Component {
       timeout: setTimeout(() => this.setState({ alert: '' }), ALERT_TIMEOUT),
     })
 
-    this.setState({
+    return this.setState({
       alert: <Alert type={type} text={text} close={this.close} />,
     })
-
-    return
   }
 
   // Functions related to requests
   responseHandler = (response, body) => {
     if (response == 'success') {
       this.buildAlert('success', 'Usuario creado con éxito.')
-      this.clearInputs()
-
-      return
+      return this.clearInputs()
     }
 
     if (body.message == 'Conflict') {
-      this.buildAlert(
+      return this.buildAlert(
         'attention',
         'Este usuario ya ha sido creado. Pruebe con un nuevo correo.'
       )
-
-      return
     }
 
-    this.buildAlert('error', ERROR_MESSAGE)
-
-    return
+    return this.buildAlert('error', ERROR_MESSAGE)
   }
 
   createUser = () => {
@@ -105,14 +95,12 @@ class CreateUser extends Component {
     // Verify that the required fields are filled
     if (!this.checkMandatoryInputs()) {
       setTimeout(() => this.buildAlert('attention', MANDATORY_MESSAGE), 10)
-
       return
     }
 
     // Verify that the email format is valid
     if (!validateEmail(this.state.email)) {
       setTimeout(() => this.buildAlert('attention', EMAIL_MESSAGE), 10)
-
       return
     }
 
@@ -126,7 +114,6 @@ class CreateUser extends Component {
           ),
         10
       )
-
       return
     }
 
@@ -138,7 +125,7 @@ class CreateUser extends Component {
       password: this.state.password,
     }
 
-    postRequest(CREATE_USER, body, this.responseHandler)
+    return postRequest(CREATE_USER, body, this.responseHandler)
   }
 
   // Auxiliary functions

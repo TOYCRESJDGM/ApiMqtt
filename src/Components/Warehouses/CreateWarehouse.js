@@ -30,23 +30,21 @@ class CreateWarehouse extends Component {
       value = value.toLowerCase()
     }
 
-    this.setState({ [attribute]: value })
+    return this.setState({ [attribute]: value })
   }
 
   clearInputs = () => {
-    this.setState({
+    return this.setState({
       name: '',
       address: '',
       desc: '',
       email: '',
     })
-
-    return
   }
 
   // Functions to handle alerts
   close = () => {
-    this.setState({ alert: '' })
+    return this.setState({ alert: '' })
   }
 
   buildAlert = (type, text) => {
@@ -56,25 +54,19 @@ class CreateWarehouse extends Component {
       timeout: setTimeout(() => this.setState({ alert: '' }), ALERT_TIMEOUT),
     })
 
-    this.setState({
+    return this.setState({
       alert: <Alert type={type} text={text} close={this.close} />,
     })
-
-    return
   }
 
   // Functions related to requests
   responseHandler = (response, body) => {
     if (response == 'success') {
       this.buildAlert('success', 'Bodega creada con éxito.')
-      this.clearInputs()
-
-      return
+      return this.clearInputs()
     }
 
-    this.buildAlert('error', ERROR_MESSAGE)
-
-    return
+    return this.buildAlert('error', ERROR_MESSAGE)
   }
 
   createWarehouse = () => {
@@ -83,7 +75,6 @@ class CreateWarehouse extends Component {
     // Verify that the required fields are filled
     if (!this.checkMandatoryInputs()) {
       setTimeout(() => this.buildAlert('attention', MANDATORY_MESSAGE), 10)
-
       return
     }
 
@@ -94,7 +85,7 @@ class CreateWarehouse extends Component {
       email: this.state.email,
     }
 
-    postRequest(CREATE_WAREHOUSE, body, this.responseHandler)
+    return postRequest(CREATE_WAREHOUSE, body, this.responseHandler)
   }
 
   checkMandatoryInputs() {
