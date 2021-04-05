@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import './Styles.css'
 
 import Alert from '../Alerts/Alert'
-import { validateEmail } from '../../Functions/Helpers'
+import { validateEmail, setSelectOptions } from '../../Functions/Helpers'
 import { postRequest } from '../../Functions/Post'
 import {
   CREATE_USER,
@@ -10,6 +10,7 @@ import {
   EMAIL_MESSAGE,
   ERROR_MESSAGE,
   ALERT_TIMEOUT,
+  BRANCHES,
 } from '../../Functions/Constants'
 
 class CreateUser extends Component {
@@ -261,15 +262,15 @@ class CreateUser extends Component {
               value={this.state.branch}
               onChange={this.handleChange}
             >
-              <option value='' selected={true} disabled='disabled'>
+              <option
+                className='global-form-input-select-option'
+                value=''
+                selected={true}
+                disabled='disabled'
+              >
                 Seleccione una rama...
               </option>
-              <option value='Cachorros'>Cachorros</option>
-              <option value='Lobatos'>Lobatos</option>
-              <option value='Webelos'>Webelos</option>
-              <option value='Scouts'>Scouts</option>
-              <option value='Rovers'>Rovers</option>
-              <option value='Sin rama'>Sin rama</option>
+              {setSelectOptions(BRANCHES)}
             </select>
           </div>
 

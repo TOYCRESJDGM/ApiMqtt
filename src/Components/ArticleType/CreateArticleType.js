@@ -3,11 +3,13 @@ import './Styles.css'
 
 import Alert from '../Alerts/Alert'
 import { postRequest } from '../../Functions/Post'
+import { setSelectOptions } from '../../Functions/Helpers'
 import {
   CREATE_ARTICLE_TYPE,
   MANDATORY_MESSAGE,
   ERROR_MESSAGE,
   ALERT_TIMEOUT,
+  CLASSIFICATIONS,
 } from '../../Functions/Constants'
 
 class CreateArticleType extends Component {
@@ -159,32 +161,19 @@ class CreateArticleType extends Component {
             </span>
             <select
               id='classif'
-              type='text'
               value={this.state.classif}
               onChange={this.handleChange}
               className='global-form-input-select'
             >
-              <option className='global-form-input-select-option' value=''>
-                Seleccione uno
-              </option>
               <option
                 className='global-form-input-select-option'
-                value='Elementos de cocina'
+                value=''
+                selected={true}
+                disabled='disabled'
               >
-                Elementos de cocina
+                Seleccione una clasificación...
               </option>
-              <option
-                className='global-form-input-select-option'
-                value='Elementos de limpieza'
-              >
-                Elementos de limpieza
-              </option>
-              <option
-                className='global-form-input-select-option'
-                value='Elementos para acampar'
-              >
-                Elementos para acampar
-              </option>
+              {setSelectOptions(CLASSIFICATIONS)}
             </select>
           </div>
           <div className='global-form-group-checkbox'>
