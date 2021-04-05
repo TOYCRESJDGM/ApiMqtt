@@ -4,6 +4,7 @@ import './Styles.css'
 import CreateUser from '../Users/CreateUser'
 import CreateArticleType from '../ArticleType/CreateArticleType'
 import CreateWarehouse from '../Warehouses/CreateWarehouse'
+import CreateArticle from '../Articles/CreateArticle'
 
 class MenuView extends Component {
   constructor() {
@@ -47,6 +48,8 @@ class MenuView extends Component {
         return <CreateWarehouse />
       case 4:
         return <CreateArticleType />
+      case 5:
+        return <CreateArticle />
       default:
         return <div></div>
     }

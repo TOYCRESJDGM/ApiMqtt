@@ -10,9 +10,15 @@ export function setSelectOptions(options) {
 
   let select_options = []
 
-  for (op in options) {
+  for (let i = 0; i < options.length; i++) {
+    let op = options[i]
+
     select_options.push(
-      <option className='global-form-input-select-option' value={op.value}>
+      <option
+        key={op.name}
+        className='global-form-input-select-option'
+        value={op.value}
+      >
         {op.name}
       </option>
     )

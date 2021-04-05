@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-import './Styles.css'
 
 import Alert from '../Alerts/Alert'
 import { setSelectOptions } from '../../Functions/Helpers'
@@ -17,6 +16,7 @@ import {
 class CreateArticle extends Component {
   constructor() {
     super()
+    this.myRef = React.createRef()
     this.state = {
       // Request states
       available_state: '',
@@ -70,6 +70,10 @@ class CreateArticle extends Component {
     })
   }
 
+  scroll = () => {
+    this.myRef.current.scrollIntoView({ behavior: 'smooth' })
+  }
+
   // Functions related to requests
   responseHandler = (response, body) => {
     if (response == 'success') {
@@ -82,6 +86,7 @@ class CreateArticle extends Component {
 
   createArticle = () => {
     this.close()
+    this.scroll()
 
     // Verify that the required fields are filled
     if (!this.checkMandatoryInputs()) {
@@ -130,7 +135,9 @@ class CreateArticle extends Component {
     return (
       <div className='cu-container'>
         {this.state.alert}
-        <span className='global-comp-title'>Crear artículo</span>
+        <span className='global-comp-title' ref={this.myRef}>
+          Crear artículo
+        </span>
         <span className='global-comp-description'>
           Diligencie el formulario para crear un artículo. Los campos marcados
           con <strong className='global-form-mandatory'>*</strong> son
@@ -287,18 +294,23 @@ class CreateArticle extends Component {
             El tipo de artículo seleccionado no posee elementos secundarios.
           </span>
 
-          <button
-            className='global-form-solid-button'
-            onClick={this.createArticle}
+          <div
+            className='global-form-buttons-container'
+            style={{ margin: '0px' }}
           >
-            Enviar
-          </button>
-          <button
-            className='global-form-outline-button'
-            onClick={this.clearInputs}
-          >
-            Cancelar
-          </button>
+            <button
+              className='global-form-solid-button'
+              onClick={this.createArticle}
+            >
+              Enviar
+            </button>
+            <button
+              className='global-form-outline-button'
+              onClick={this.clearInputs}
+            >
+              Cancelar
+            </button>
+          </div>
         </div>
       </div>
     )

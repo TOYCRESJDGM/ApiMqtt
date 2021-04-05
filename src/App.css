@@ -62,6 +62,8 @@ code {
   width: -webkit-fill-available;
   padding: 20px 15px;
   background-color: var(--white);
+  display: flex;
+  flex-direction: column;
 }
 
 .global-form-group {
