@@ -3,11 +3,13 @@ import './Styles.css'
 
 import Alert from '../Alerts/Alert'
 import { postRequest } from '../../Functions/Post'
+import { setSelectOptions } from '../../Functions/Helpers'
 import {
   CREATE_ARTICLE_TYPE,
   MANDATORY_MESSAGE,
   ERROR_MESSAGE,
   ALERT_TIMEOUT,
+  CLASSIFICATIONS,
 } from '../../Functions/Constants'
 
 class CreateArticleType extends Component {
@@ -31,32 +33,28 @@ class CreateArticleType extends Component {
     const value = target.type === 'checkbox' ? target.checked : target.value
     const name = target.name
 
-    this.setState({
-      [name]: value,
-    })
+    return this.setState({ [name]: value })
   }
 
   handleChange = (event) => {
     let attribute = event.target.id
     let value = event.target.value
 
-    this.setState({ [attribute]: value })
+    return this.setState({ [attribute]: value })
   }
 
   clearInputs = () => {
-    this.setState({
+    return this.setState({
       name: '',
       desc: '',
       classif: '',
       is_parent: false,
     })
-
-    return
   }
 
   // Functions to handle alerts
   close = () => {
-    this.setState({ alert: '' })
+    return this.setState({ alert: '' })
   }
 
   buildAlert = (type, text) => {
@@ -66,24 +64,18 @@ class CreateArticleType extends Component {
       timeout: setTimeout(() => this.setState({ alert: '' }), ALERT_TIMEOUT),
     })
 
-    this.setState({
+    return this.setState({
       alert: <Alert type={type} text={text} close={this.close} />,
     })
-
-    return
   }
 
   responseHandler = (response, body) => {
     if (response == 'success') {
       this.buildAlert('success', 'Tipo de articulo creado con éxito.')
-      this.clearInputs()
-
-      return
+      return this.clearInputs()
     }
 
-    this.buildAlert('error', ERROR_MESSAGE)
-
-    return
+    return this.buildAlert('error', ERROR_MESSAGE)
   }
 
   createArticleType = () => {
@@ -92,7 +84,6 @@ class CreateArticleType extends Component {
     // Verify that the required fields are filled
     if (!this.checkMandatoryInputs()) {
       setTimeout(() => this.buildAlert('attention', MANDATORY_MESSAGE), 10)
-
       return
     }
 
@@ -103,7 +94,7 @@ class CreateArticleType extends Component {
       is_parent: this.state.is_parent,
     }
 
-    postRequest(CREATE_ARTICLE_TYPE, body, this.responseHandler)
+    return postRequest(CREATE_ARTICLE_TYPE, body, this.responseHandler)
   }
 
   checkMandatoryInputs() {
@@ -159,32 +150,19 @@ class CreateArticleType extends Component {
             </span>
             <select
               id='classif'
-              type='text'
               value={this.state.classif}
               onChange={this.handleChange}
               className='global-form-input-select'
             >
-              <option className='global-form-input-select-option' value=''>
-                Seleccione uno
-              </option>
               <option
                 className='global-form-input-select-option'
-                value='Elementos de cocina'
+                value=''
+                selected={true}
+                disabled='disabled'
               >
-                Elementos de cocina
+                Seleccione una clasificación...
               </option>
-              <option
-                className='global-form-input-select-option'
-                value='Elementos de limpieza'
-              >
-                Elementos de limpieza
-              </option>
-              <option
-                className='global-form-input-select-option'
-                value='Elementos para acampar'
-              >
-                Elementos para acampar
-              </option>
+              {setSelectOptions(CLASSIFICATIONS)}
             </select>
           </div>
           <div className='global-form-group-checkbox'>

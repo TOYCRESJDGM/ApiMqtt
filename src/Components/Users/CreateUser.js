@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import './Styles.css'
 
 import Alert from '../Alerts/Alert'
-import { validateEmail } from '../../Functions/Helpers'
+import { validateEmail, setSelectOptions } from '../../Functions/Helpers'
 import { postRequest } from '../../Functions/Post'
 import {
   CREATE_USER,
@@ -10,6 +10,7 @@ import {
   EMAIL_MESSAGE,
   ERROR_MESSAGE,
   ALERT_TIMEOUT,
+  BRANCHES,
 } from '../../Functions/Constants'
 
 class CreateUser extends Component {
@@ -34,17 +35,17 @@ class CreateUser extends Component {
 
     if (attribute == 'phone') {
       value = value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1')
-    }
-
-    if (attribute == 'email') {
+    } else if (attribute == 'email') {
       value = value.toLowerCase()
+    } else if (attribute == 'user_name') {
+      value = value.toUpperCase()
     }
 
-    this.setState({ [attribute]: value })
+    return this.setState({ [attribute]: value })
   }
 
   clearInputs = () => {
-    this.setState({
+    return this.setState({
       email: '',
       user_name: '',
       branch: '',
@@ -52,13 +53,11 @@ class CreateUser extends Component {
       password: '',
       password_check: '',
     })
-
-    return
   }
 
   // Functions to handle alerts
   close = () => {
-    this.setState({ alert: '' })
+    return this.setState({ alert: '' })
   }
 
   buildAlert = (type, text) => {
@@ -68,34 +67,26 @@ class CreateUser extends Component {
       timeout: setTimeout(() => this.setState({ alert: '' }), ALERT_TIMEOUT),
     })
 
-    this.setState({
+    return this.setState({
       alert: <Alert type={type} text={text} close={this.close} />,
     })
-
-    return
   }
 
   // Functions related to requests
   responseHandler = (response, body) => {
     if (response == 'success') {
       this.buildAlert('success', 'Usuario creado con éxito.')
-      this.clearInputs()
-
-      return
+      return this.clearInputs()
     }
 
     if (body.message == 'Conflict') {
-      this.buildAlert(
+      return this.buildAlert(
         'attention',
         'Este usuario ya ha sido creado. Pruebe con un nuevo correo.'
       )
-
-      return
     }
 
-    this.buildAlert('error', ERROR_MESSAGE)
-
-    return
+    return this.buildAlert('error', ERROR_MESSAGE)
   }
 
   createUser = () => {
@@ -104,14 +95,12 @@ class CreateUser extends Component {
     // Verify that the required fields are filled
     if (!this.checkMandatoryInputs()) {
       setTimeout(() => this.buildAlert('attention', MANDATORY_MESSAGE), 10)
-
       return
     }
 
     // Verify that the email format is valid
     if (!validateEmail(this.state.email)) {
       setTimeout(() => this.buildAlert('attention', EMAIL_MESSAGE), 10)
-
       return
     }
 
@@ -125,7 +114,6 @@ class CreateUser extends Component {
           ),
         10
       )
-
       return
     }
 
@@ -137,7 +125,7 @@ class CreateUser extends Component {
       password: this.state.password,
     }
 
-    postRequest(CREATE_USER, body, this.responseHandler)
+    return postRequest(CREATE_USER, body, this.responseHandler)
   }
 
   // Auxiliary functions
@@ -261,15 +249,15 @@ class CreateUser extends Component {
               value={this.state.branch}
               onChange={this.handleChange}
             >
-              <option value='' selected={true} disabled='disabled'>
+              <option
+                className='global-form-input-select-option'
+                value=''
+                selected={true}
+                disabled='disabled'
+              >
                 Seleccione una rama...
               </option>
-              <option value='Cachorros'>Cachorros</option>
-              <option value='Lobatos'>Lobatos</option>
-              <option value='Webelos'>Webelos</option>
-              <option value='Scouts'>Scouts</option>
-              <option value='Rovers'>Rovers</option>
-              <option value='Sin rama'>Sin rama</option>
+              {setSelectOptions(BRANCHES)}
             </select>
           </div>
 
