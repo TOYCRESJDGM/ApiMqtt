@@ -27,7 +27,7 @@ export const STATES = [
 ]
 
 // SERVICES
-export const HOST = 'http://localhost:3000/api/'
+export const HOST = 'http://localhost:3001/api/'
 export const LOGIN = 'user/login'
 export const CREATE_USER = 'user/create'
 export const CREATE_WAREHOUSE = 'warehouse/create'
