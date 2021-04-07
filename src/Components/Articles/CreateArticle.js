@@ -5,6 +5,7 @@ import Alert from '../Alerts/Alert'
 import SecondaryForm from './SecondaryForm'
 import { setSelectOptions } from '../../Functions/Helpers'
 import { postRequest } from '../../Functions/Post'
+import { getWarehouses } from '../../Functions/Get'
 import {
   MANDATORY_MESSAGE,
   ERROR_MESSAGE,
@@ -34,10 +35,7 @@ class CreateArticle extends Component {
       timeout: '',
       cont: 0,
       secondaryArticles: [],
-      warehouses: [
-        { value: 1, name: 'Bodega #1' },
-        { value: 2, name: 'Bodega #2' },
-      ],
+      warehouses: [],
       article_types: [
         {
           value: 1,
@@ -47,6 +45,10 @@ class CreateArticle extends Component {
         { value: 2, name: 'Estacas', is_parent: false },
       ],
     }
+  }
+
+  componentDidMount() {
+    getWarehouses(this.setWarehouses)
   }
 
   // Functions to handle states
@@ -103,6 +105,18 @@ class CreateArticle extends Component {
       article_type_fk: 0,
       classif: '',
     })
+  }
+
+  setWarehouses = (response, body) => {
+    if (response == 'success') {
+      return this.setState({ warehouses: body })
+    }
+
+    if (body == 'No items') {
+      return this.buildAlert('attention', 'No hay bodegas creadas.')
+    }
+
+    return this.buildAlert('error', ERROR_MESSAGE)
   }
 
   // Functions to handle alerts
