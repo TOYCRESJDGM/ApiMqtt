@@ -2,11 +2,13 @@ import React, { Component } from 'react'
 import './Styles.css'
 
 import Alert from '../Alerts/Alert'
+import { validateEmail } from '../../Functions/Helpers'
 import { postRequest } from '../../Functions/Post'
 import {
   CREATE_WAREHOUSE,
   MANDATORY_MESSAGE,
   ERROR_MESSAGE,
+  EMAIL_MESSAGE,
   ALERT_TIMEOUT,
 } from '../../Functions/Constants'
 
@@ -68,6 +70,13 @@ class CreateWarehouse extends Component {
       return this.clearInputs()
     }
 
+    if (body.message == 'Not Found') {
+      return this.buildAlert(
+        'attention',
+        'El correo ingresado no pertenece a un usuario registrado.'
+      )
+    }
+
     return this.buildAlert('error', ERROR_MESSAGE)
   }
 
@@ -77,6 +86,12 @@ class CreateWarehouse extends Component {
     // Verify that the required fields are filled
     if (!this.checkMandatoryInputs()) {
       setTimeout(() => this.buildAlert('attention', MANDATORY_MESSAGE), 10)
+      return
+    }
+
+    // Verify that the email format is valid
+    if (!validateEmail(this.state.email)) {
+      setTimeout(() => this.buildAlert('attention', EMAIL_MESSAGE), 10)
       return
     }
 
