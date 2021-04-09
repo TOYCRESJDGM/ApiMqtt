@@ -310,6 +310,15 @@ class CreateArticle extends Component {
 
   deleteSecondaryForm = (key) => {
     if (this.state.secondary_articles.length == 1) {
+      this.scroll()
+      setTimeout(
+        () =>
+          this.buildAlert(
+            'attention',
+            'Los artículos compuestos deben tener al menos un artículo secundario.'
+          ),
+        10
+      )
       return
     }
 
