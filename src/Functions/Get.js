@@ -57,9 +57,26 @@ export function getWarehouses(responseHandler) {
 }
 
 export function getArticleTypes(classif, responseHandler) {
-  if (sessionStorage.getItem('article_types')) {
+  let session_classif = ''
+  switch (classif) {
+    case 'Elementos de cocina':
+      session_classif = 'kitchen'
+      break
+    case 'Elementos de limpieza':
+      session_classif = 'cleaning'
+      break
+    case 'Elementos para acampar':
+      session_classif = 'camp'
+      break
+  }
+
+  if (!session_classif) {
+    return responseHandler('error', 'No valid classif')
+  }
+
+  if (sessionStorage.getItem('article_types_' + session_classif)) {
     let storage_article_types = JSON.parse(
-      sessionStorage.getItem('article_types')
+      sessionStorage.getItem('article_types_' + session_classif)
     )
 
     if (storage_article_types[0].hasOwnProperty('article_type_name')) {
@@ -74,7 +91,10 @@ export function getArticleTypes(classif, responseHandler) {
         })
       }
 
-      sessionStorage.setItem('article_types', JSON.stringify(article_types))
+      sessionStorage.setItem(
+        'article_types_' + session_classif,
+        JSON.stringify(article_types)
+      )
       responseHandler('success', article_types)
       return
     }
@@ -109,7 +129,7 @@ export function getArticleTypes(classif, responseHandler) {
       }
 
       let json = JSON.stringify(article_types)
-      sessionStorage.setItem('article_types', json)
+      sessionStorage.setItem('article_types_' + session_classif, json)
       responseHandler('success', article_types)
     })
     .catch((error) => responseHandler('error', error))
