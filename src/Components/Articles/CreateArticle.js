@@ -5,8 +5,9 @@ import Alert from '../Alerts/Alert'
 import SecondaryForm from './SecondaryForm'
 import { setSelectOptions } from '../../Functions/Helpers'
 import { postRequest } from '../../Functions/Post'
-import { getWarehouses } from '../../Functions/Get'
+import { getWarehouses, getArticleTypes } from '../../Functions/Get'
 import {
+  CREATE_ARTICLE,
   MANDATORY_MESSAGE,
   ERROR_MESSAGE,
   ALERT_TIMEOUT,
@@ -36,14 +37,7 @@ class CreateArticle extends Component {
       cont: 0,
       secondaryArticles: [],
       warehouses: [],
-      article_types: [
-        {
-          value: 1,
-          name: 'Carpa pequeña',
-          is_parent: true,
-        },
-        { value: 2, name: 'Estacas', is_parent: false },
-      ],
+      article_types: [],
     }
   }
 
@@ -92,6 +86,10 @@ class CreateArticle extends Component {
       }
     }
 
+    if (attribute == 'classif') {
+      getArticleTypes(value, this.setArticleTypes)
+    }
+
     return this.setState({ [attribute]: value })
   }
 
@@ -114,6 +112,21 @@ class CreateArticle extends Component {
 
     if (body == 'No items') {
       return this.buildAlert('attention', 'No hay bodegas creadas.')
+    }
+
+    return this.buildAlert('error', ERROR_MESSAGE)
+  }
+
+  setArticleTypes = (response, body) => {
+    if (response == 'success') {
+      return this.setState({ article_types: body })
+    }
+
+    if (body == 'No items') {
+      return this.buildAlert(
+        'attention',
+        'No hay tipos de artículo asociados a la clasificación seleccionada.'
+      )
     }
 
     return this.buildAlert('error', ERROR_MESSAGE)
@@ -143,6 +156,7 @@ class CreateArticle extends Component {
   // Functions related to requests
   responseHandler = (response, body) => {
     if (response == 'success') {
+      console.log(body)
       this.buildAlert('success', 'Artículo creado con éxito.')
       return this.clearInputs()
     }
@@ -169,7 +183,7 @@ class CreateArticle extends Component {
       article_type_fk: this.state.article_type_fk,
     }
 
-    // return postRequest(CREATE_ARTICLE, body, this.responseHandler)
+    return postRequest(CREATE_ARTICLE, body, this.responseHandler)
   }
 
   // Auxiliary functions
