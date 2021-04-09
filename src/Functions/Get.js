@@ -12,18 +12,18 @@ export function getWarehouses(responseHandler) {
   if (sessionStorage.getItem('warehouses')) {
     let storage_warehouses = JSON.parse(sessionStorage.getItem('warehouses'))
 
-    if (storage_warehouses[0].hasOwnProperty('warehouse_name')) {
-      let warehouses = []
-      for (let i = 0; i < storage_warehouses.length; i++) {
-        let obj = storage_warehouses[i]
+    // if (storage_warehouses[0].hasOwnProperty('warehouse_name')) {
+    //   let warehouses = []
+    //   for (let i = 0; i < storage_warehouses.length; i++) {
+    //     let obj = storage_warehouses[i]
 
-        warehouses.push({ value: obj.id, name: obj.warehouse_name })
-      }
+    //     warehouses.push({ value: obj.id, name: obj.warehouse_name })
+    //   }
 
-      sessionStorage.setItem('warehouses', JSON.stringify(warehouses))
-      responseHandler('success', warehouses)
-      return
-    }
+    //   sessionStorage.setItem('warehouses', JSON.stringify(warehouses))
+    //   responseHandler('success', warehouses)
+    //   return
+    // }
 
     responseHandler('success', storage_warehouses)
     return
@@ -79,25 +79,25 @@ export function getArticleTypes(classif, responseHandler) {
       sessionStorage.getItem('article_types_' + session_classif)
     )
 
-    if (storage_article_types[0].hasOwnProperty('article_type_name')) {
-      let article_types = []
-      for (let i = 0; i < storage_article_types.length; i++) {
-        let obj = storage_article_types[i]
+    // if (storage_article_types[0].hasOwnProperty('article_type_name')) {
+    //   let article_types = []
+    //   for (let i = 0; i < storage_article_types.length; i++) {
+    //     let obj = storage_article_types[i]
 
-        article_types.push({
-          value: obj.id,
-          name: obj.article_type_name,
-          is_parent: obj.is_parent == 1 ? true : false,
-        })
-      }
+    //     article_types.push({
+    //       value: obj.id,
+    //       name: obj.article_type_name,
+    //       is_parent: obj.is_parent == 1 ? true : false,
+    //     })
+    //   }
 
-      sessionStorage.setItem(
-        'article_types_' + session_classif,
-        JSON.stringify(article_types)
-      )
-      responseHandler('success', article_types)
-      return
-    }
+    //   sessionStorage.setItem(
+    //     'article_types_' + session_classif,
+    //     JSON.stringify(article_types)
+    //   )
+    //   responseHandler('success', article_types)
+    //   return
+    // }
 
     responseHandler('success', storage_article_types)
     return

@@ -59,23 +59,20 @@ class SecondaryForm extends Component {
       }
 
       if (filtered_array.length < 1) {
-        return this.buildAlert(
-          'attention',
-          'No hay tipos de artículo asociados a la clasificación seleccionada.'
-        )
+        this.props.scroll()
+        return this.props.responseHandler('error', 'No items')
       }
 
       return this.setState({ article_types: filtered_array })
     }
 
     if (body == 'No items') {
-      return this.buildAlert(
-        'attention',
-        'No hay tipos de artículo asociados a la clasificación seleccionada.'
-      )
+      this.props.scroll()
+      return this.props.responseHandler('error', 'No items')
     }
 
-    return this.buildAlert('error', ERROR_MESSAGE)
+    this.props.scroll()
+    return this.props.responseHandler('error', body)
   }
 
   setSecondaryForm = () => {

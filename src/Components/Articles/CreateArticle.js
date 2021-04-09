@@ -60,7 +60,9 @@ class CreateArticle extends Component {
             <SecondaryForm
               id='sf-0'
               key='sf-0'
+              scroll={this.scroll}
               delete={this.deleteSecondaryForm}
+              responseHandler={this.responseHandler}
               setSecondaryFormList={this.setSecondaryFormList}
             />
           )
@@ -97,6 +99,9 @@ class CreateArticle extends Component {
       warehouse_fk: 0,
       article_type_fk: 0,
       classif: '',
+      cont: 0,
+      secondary_articles: [],
+      secondary_article_list: [],
     })
   }
 
@@ -161,6 +166,13 @@ class CreateArticle extends Component {
     if (response == 'success') {
       this.buildAlert('success', 'Artículo creado con éxito.')
       return this.clearInputs()
+    }
+
+    if (body == 'No items') {
+      return this.buildAlert(
+        'attention',
+        'No hay tipos de artículo asociados a la clasificación seleccionada.'
+      )
     }
 
     return this.buildAlert('error', ERROR_MESSAGE)
@@ -286,7 +298,9 @@ class CreateArticle extends Component {
       <SecondaryForm
         id={'sf-' + newCont}
         key={'sf-' + newCont}
+        scroll={this.scroll}
         delete={this.deleteSecondaryForm}
+        responseHandler={this.responseHandler}
         setSecondaryFormList={this.setSecondaryFormList}
       />
     )
