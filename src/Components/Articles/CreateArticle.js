@@ -110,7 +110,7 @@ class CreateArticle extends Component {
       return this.setState({ warehouses: body })
     }
 
-    if (body == 'No items') {
+    if (body == 'No items' || body.message == 'Not Found') {
       return this.buildAlert('attention', 'No hay bodegas creadas.')
     }
 

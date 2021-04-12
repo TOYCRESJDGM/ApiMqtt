@@ -35,6 +35,8 @@ class CreateBorrowing extends Component {
         <AuxiliaryForm
           id={'sf-1'}
           key={'sf-1'}
+          scroll={this.scroll}
+          responseHandler={this.responseHandler}
           delete={this.deleteSecondaryForm}
         />,
       ],
@@ -51,21 +53,28 @@ class CreateBorrowing extends Component {
     let attribute = event.target.id
     let value = event.target.value
 
+    if (attribute == 'warehouse_fk') {
+      sessionStorage.setItem('borrowing_warehouse_fk', value)
+    }
+
     return this.setState({ [attribute]: value })
   }
 
   clearInputs = () => {
     return this.setState({
-        warehouse_fk: 0,
-        pick_up_date:'',
-        return_date: '',
-  
-        // Auxiliary form states
-        classif: '',
-        cont: 1,
-        secondaryArticles: [<AuxiliaryForm
+      warehouse_fk: 0,
+      pick_up_date: '',
+      return_date: '',
+
+      // Auxiliary form states
+      classif: '',
+      cont: 1,
+      secondaryArticles: [
+        <AuxiliaryForm
           id={'sf-1'}
           key={'sf-1'}
+          scroll={this.scroll}
+          responseHandler={this.responseHandler}
           delete={this.deleteSecondaryForm}
         />,
       ],
@@ -77,7 +86,7 @@ class CreateBorrowing extends Component {
       return this.setState({ warehouses: body })
     }
 
-    if (body == 'No items') {
+    if (body == 'No items' || body.message == 'Not Found') {
       return this.buildAlert('attention', 'No hay bodegas creadas.')
     }
 
@@ -95,10 +104,10 @@ class CreateBorrowing extends Component {
       return this.clearInputs()
     }
 
-    if (body == 'No items') {
+    if (body == 'No items' || body.message == 'Not Found') {
       return this.buildAlert(
         'attention',
-        'No hay tipos de artículo asociados a la clasificación seleccionada.'
+        'No hay elementos que mostrar con las selecciones que ha realizado.'
       )
     }
 
@@ -147,11 +156,17 @@ class CreateBorrowing extends Component {
         continue
       }
       if (localStorage.getItem('sf-' + i) == 'incomplete') {
-        setTimeout(() => this.buildAlert('attention', 'Asegúrese de diligenciar correctamente todos los campos de sus formulario para artículos'), 10)
+        setTimeout(
+          () =>
+            this.buildAlert(
+              'attention',
+              'Asegúrese de diligenciar correctamente todos los campos de sus formulario para artículos'
+            ),
+          10
+        )
         return
-      }
-      else {
-        body.article_list.push({'article_id': localStorage.getItem('sf-'+ i)})
+      } else {
+        body.article_list.push({ article_id: localStorage.getItem('sf-' + i) })
       }
     }
 
@@ -183,6 +198,8 @@ class CreateBorrowing extends Component {
       <AuxiliaryForm
         id={'sf-' + newCont}
         key={'sf-' + newCont}
+        scroll={this.scroll}
+        responseHandler={this.responseHandler}
         delete={this.deleteSecondaryForm}
       />
     )
