@@ -3,7 +3,7 @@ import './Styles.css'
 
 import { setSelectOptions } from '../../Functions/Helpers'
 import { setSelectArticleOptions } from '../../Functions/Helpers'
-import { getArticles } from '../../Functions/Get'
+import { getArticles, getArticleTypes } from '../../Functions/Get'
 import { CLASSIFICATIONS, BRANCHES } from '../../Functions/Constants'
 
 class AuxiliaryForm extends Component {
@@ -17,13 +17,9 @@ class AuxiliaryForm extends Component {
       classif: '',
       article_type_fk: 0,
       branch: '',
-      article_types: [
-        {
-          value: 1,
-          name: 'Carpa pequeña',
-        },
-      ],
+      article_types: [],
       articles: [],
+      form_name: 'Nuevo Artículo',
     }
 
     this.prevState = {
@@ -37,22 +33,116 @@ class AuxiliaryForm extends Component {
     }
   }
 
+  componentDidMount() {
+    localStorage.setItem(this.props.id, 'incomplete')
+  }
+
+  componentDidUpdate() {
+    if (this.state.article_fk !== this.prevState.article_fk) {
+      if (this.checkMandatoryInputs()) {
+        localStorage.setItem(this.props.id, this.state.article_fk)
+      }
+    }
+  }
+
+  componentWillUnmount() {
+    localStorage.setItem(this.props.id, 'delete')
+  }
+
   // Functions to handle states
   handleChange = (event) => {
     let comp_attribute = event.target.id.split('-')
     let attribute = comp_attribute[2]
     let value = event.target.value
 
+    if (attribute == 'classif') {
+      this.setState({
+        article_type_fk: 0,
+        article_fk: 0,
+        branch: '',
+        article_types: [],
+        articles: [],
+        form_name: 'Nuevo Artículo',
+      })
+
+      getArticleTypes(value, this.setArticleTypes)
+    }
+
+    if (attribute == 'article_type_fk') {
+      this.setState({
+        article_fk: 0,
+        branch: '',
+        articles: [],
+        form_name: 'Nuevo Artículo',
+      })
+    }
+
+    if (attribute == 'branch') {
+      this.setState({
+        article_fk: 0,
+        form_name: 'Nuevo Artículo',
+      })
+
+      let warehouse = sessionStorage.getItem('borrowing_warehouse_fk')
+        ? parseInt(sessionStorage.getItem('borrowing_warehouse_fk'))
+        : 0
+
+      getArticles(
+        warehouse,
+        this.state.article_type_fk,
+        value,
+        this.setArticles
+      )
+    }
+
+    if (attribute == 'article_fk') {
+      this.setArticleTypeName(value)
+    }
+
     return this.setState({ [attribute]: value })
   }
 
-  componentDidMount() {
-    localStorage.setItem(this.props.id, 'incomplete')
-    getArticles(this.setArticles)
+  setArticleTypes = (response, body) => {
+    if (response == 'success') {
+      return this.setState({ article_types: body })
+    }
+
+    if (body == 'No items' || body.message == 'No items') {
+      this.props.scroll()
+      return this.props.responseHandler('error', 'No items')
+    }
+
+    this.props.scroll()
+    return this.props.responseHandler('error', body)
   }
 
-  componentWillUnmount() {
-    localStorage.setItem(this.props.id, 'delete')
+  setArticles = (response, body) => {
+    if (response == 'success') {
+      this.setState({ articles: [] })
+      return this.setState({ articles: body })
+    }
+
+    if (body == 'No items' || body.message == 'Not Found') {
+      this.props.scroll()
+      return this.props.responseHandler('error', 'No items')
+    }
+
+    this.props.scroll()
+    return this.props.responseHandler('error', body)
+  }
+
+  setArticleTypeName = (value) => {
+    let array = this.state.articles
+
+    for (let i = 0; i < array.length; i++) {
+      let obj = array[i]
+
+      if (obj.value == value) {
+        return this.setState({ form_name: obj.name })
+      }
+    }
+
+    return
   }
 
   collapse = () => {
@@ -69,26 +159,6 @@ class AuxiliaryForm extends Component {
 
   delete = () => {
     return this.props.delete(this.props.id)
-  }
-
-  setArticles = (response, body) => {
-    if (response == 'success') {
-      return this.setState({ articles: body })
-    }
-
-    if (body == 'No items') {
-      alert('No hay artículos creados.')
-    }
-
-    return alert(ERROR_MESSAGE)
-  }
-
-  componentDidUpdate() {
-    if (this.state.article_fk !== this.prevState.article_fk) {
-      if (this.checkMandatoryInputs()) {
-        localStorage.setItem(this.props.id, this.state.article_fk)
-      }
-    }
   }
 
   clearInputs = () => {
@@ -137,13 +207,7 @@ class AuxiliaryForm extends Component {
             onClick={this.delete}
           />
           <div className='af-header'>
-            <span className='af-header-title'>
-              {this.state.article_type_fk && this.state.article_fk
-                ? this.state.article_types[0]['name'] +
-                  ' - ' +
-                  this.state.article_fk
-                : 'Nuevo Artículo'}
-            </span>
+            <span className='af-header-title'>{this.state.form_name}</span>
             <img
               className='af-arrow-icon'
               src='./arrow_gray.png'
@@ -238,14 +302,14 @@ class AuxiliaryForm extends Component {
               onChange={this.handleChange}
             >
               <option
-                value=''
+                value={0}
                 className='global-form-input-select-option'
                 selected={true}
                 disabled='disabled'
               >
                 Seleccione un artículo...
               </option>
-              {setSelectArticleOptions(this.state.articles)}
+              {setSelectOptions(this.state.articles)}
             </select>
           </div>
         </div>
