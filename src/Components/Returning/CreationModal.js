@@ -1,15 +1,24 @@
 import React, { Component } from 'react'
 
 import { setSelectOptions } from '../../Functions/Helpers'
-import { STATES } from '../../Functions/Constants'
+import { getElementById } from '../../Functions/Get'
+import { BORROWING_BY_ID, STATES } from '../../Functions/Constants'
 
 class CreationModal extends Component {
   constructor() {
     super()
     this.state = {
+      // Information states
+
+      // Form states
       physical_state: '',
       obs: '',
     }
+  }
+
+  componentDidMount() {
+    let path = BORROWING_BY_ID + '?borrowing_id=' + this.props.borrowing_id
+    return getElementById(path, this.responseHandler)
   }
 
   // Functions to handle states
@@ -25,34 +34,40 @@ class CreationModal extends Component {
     return this.props.closeModal()
   }
 
+  // Functions related to requests
+  responseHandler = (response, body) => {
+    return
+  }
+
   // Auxiliary functions
   setArticleList() {
-    let articles = this.props.borrowing.article_list
+    // let articles = this.props.borrowing.article_list
 
-    let list = []
-    for (let i = 0; i < articles.length; i++) {
-      let a = articles[i]
-      list.push(
-        <li>
-          <span className='global-modal-text'>
-            {a.article_type_name + ': ' + a.article_label}
-          </span>
-        </li>
-      )
-    }
+    // let list = []
+    // for (let i = 0; i < articles.length; i++) {
+    //   let a = articles[i]
+    //   list.push(
+    //     <li>
+    //       <span className='global-modal-text'>
+    //         {a.article_type_name + ': ' + a.article_label}
+    //       </span>
+    //     </li>
+    //   )
+    // }
 
-    return list
+    // return list
+    return []
   }
 
   render() {
     let article_list = this.setArticleList()
 
     return (
-      <div class='global-modal-background'>
-        <div class='global-modal-container'>
+      <div className='global-modal-background'>
+        <div className='global-modal-container'>
           <div className='global-modal-header'>
             <span className='global-modal-title'>
-              Crear constancia para solicitud # {this.props.borrowing.id}
+              {/* Crear constancia para solicitud # {this.props.borrowing.id} */}
             </span>
             <img
               className='global-modal-icon'
@@ -65,13 +80,13 @@ class CreationModal extends Component {
             <div className='global-modal-group-container'>
               <span className='global-form-label'>Nombre responsable</span>
               <span className='global-modal-text'>
-                {this.props.borrowing.user_name}
+                {/* {this.props.borrowing.user_name} */}
               </span>
             </div>
             <div className='global-modal-group-container'>
               <span className='global-form-label'>Bodega</span>
               <span className='global-modal-text'>
-                {this.props.borrowing.warehouse_name}
+                {/* {this.props.borrowing.warehouse_name} */}
               </span>
             </div>
             <div

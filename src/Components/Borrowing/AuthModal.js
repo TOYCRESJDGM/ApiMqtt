@@ -15,8 +15,8 @@ class Modal extends Component {
 
   render() {
     return (
-      <div class='global-modal-background'>
-        <div class='global-modal-container'>
+      <div className='global-modal-background'>
+        <div className='global-modal-container'>
           <div className='global-modal-header'>
             <span className='global-modal-title'>Autorizar solicitud #</span>
             <img

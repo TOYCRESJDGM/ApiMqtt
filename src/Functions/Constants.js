@@ -42,6 +42,7 @@ export const CREATE_ARTICLE = 'article/create'
 export const LIST_ARTICLES = 'article/list'
 export const CREATE_BORROWING = 'borrowing/create'
 export const LIST_BORROWINGS = 'borrowing/list'
+export const BORROWING_BY_ID = 'borrowing/id'
 
 // ALERTS
 export const MANDATORY_MESSAGE =
@@ -51,3 +52,12 @@ export const ERROR_MESSAGE =
 export const EMAIL_MESSAGE =
   'El formato del correo electrónico no es válido. Por favor verifique.'
 export const ALERT_TIMEOUT = 6000
+
+// OTHERS
+export const DAY_IN_MS = 1000 * 60 * 60 * 24
+export const DATE_OPTIONS = {
+  weekday: 'short',
+  year: 'numeric',
+  month: 'short',
+  day: 'numeric',
+}
