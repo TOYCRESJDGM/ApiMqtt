@@ -19,7 +19,7 @@ function handleErrors(response) {
   return response
 }
 
-// COMMON POST REQUEST
+// CUSTOM GET REQUEST
 export function getWarehouses(responseHandler) {
   let session_warehouses = sessionStorage.getItem('warehouses')
 
@@ -215,6 +215,7 @@ export function getFilteredBorrowings(responseHandler) {
     .catch((error) => responseHandler('error', error))
 }
 
+// SIMPLE GET REQUESTS
 export function getElementById(path, responseHandler) {
   // Path should have id as param
   let url = HOST + path
@@ -225,7 +226,7 @@ export function getElementById(path, responseHandler) {
     .then(handleErrors)
     .then((res) => res.json())
     .then((response) => {
-      console.log(response)
+      responseHandler('success', response.rows[0])
     })
     .catch((error) => responseHandler('error', error))
 }

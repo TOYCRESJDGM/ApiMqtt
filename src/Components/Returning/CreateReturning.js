@@ -23,6 +23,9 @@ class CreateReturning extends Component {
   // Functions related to requests
   responseHandler = (response, body) => {
     if (response == 'success') {
+      sessionStorage.removeItem('borrowings')
+      this.setState({ borrowing_requests: [] })
+
       return this.buildAlert(
         'success',
         'Constancia de devolución creada con éxito.'
@@ -37,7 +40,11 @@ class CreateReturning extends Component {
       return this.setState({ borrowing_requests: body })
     }
 
-    if (body == 'No items' || body.message == 'Not Found') {
+    if (
+      body == 'No items' ||
+      body.message == 'No items' ||
+      body.message == 'Not Found'
+    ) {
       return this.setState({ borrowing_requests: [] })
     }
 
@@ -71,7 +78,11 @@ class CreateReturning extends Component {
     }
 
     return this.props.showModal(
-      <CreationModal borrowing_id={id} closeModal={this.closeModal} />
+      <CreationModal
+        borrowing_id={id}
+        closeModal={this.closeModal}
+        handleAlerts={this.responseHandler}
+      />
     )
   }
 
@@ -100,7 +111,7 @@ class CreateReturning extends Component {
       table_rows.push(
         <tr key={'tr-' + obj.id}>
           <td>{obj.id}</td>
-          <td>{obj.user_name}</td>
+          <td>{obj.Asociado.user_name}</td>
           <td>{date}</td>
           <td>{obj.delay}</td>
           <td>{obj.auth_state}</td>

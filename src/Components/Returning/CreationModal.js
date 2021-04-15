@@ -2,23 +2,29 @@ import React, { Component } from 'react'
 
 import { setSelectOptions } from '../../Functions/Helpers'
 import { getElementById } from '../../Functions/Get'
-import { BORROWING_BY_ID, STATES } from '../../Functions/Constants'
+import { postRequest } from '../../Functions/Post'
+import {
+  BORROWING_BY_ID,
+  CREATE_RETURNING,
+  STATES,
+} from '../../Functions/Constants'
 
 class CreationModal extends Component {
   constructor() {
     super()
     this.state = {
       // Information states
+      user_name: '',
 
       // Form states
-      physical_state: '',
+      physical_state: 'Funcional',
       obs: '',
     }
   }
 
   componentDidMount() {
     let path = BORROWING_BY_ID + '?borrowing_id=' + this.props.borrowing_id
-    return getElementById(path, this.responseHandler)
+    return getElementById(path, this.setBorrowingInformation)
   }
 
   // Functions to handle states
@@ -35,8 +41,32 @@ class CreationModal extends Component {
   }
 
   // Functions related to requests
+  setBorrowingInformation = (response, body) => {
+    if (response == 'success') {
+      return this.setState({
+        user_name: body.Asociado.user_name,
+      })
+    }
+
+    this.props.handleAlerts(response, body)
+
+    return this.props.closeModal()
+  }
+
   responseHandler = (response, body) => {
-    return
+    this.props.handleAlerts(response, body)
+    return this.props.closeModal()
+  }
+
+  createReturning = () => {
+    let body = {
+      state: this.state.physical_state,
+      obs: this.state.obs,
+      borrowing_fk: this.props.borrowing_id,
+      auth_user_fk: sessionStorage.getItem('user_id'),
+    }
+
+    postRequest(CREATE_RETURNING, body, this.responseHandler)
   }
 
   // Auxiliary functions
@@ -67,7 +97,7 @@ class CreationModal extends Component {
         <div className='global-modal-container'>
           <div className='global-modal-header'>
             <span className='global-modal-title'>
-              {/* Crear constancia para solicitud # {this.props.borrowing.id} */}
+              Crear constancia para solicitud # {this.props.borrowing_id}
             </span>
             <img
               className='global-modal-icon'
@@ -79,9 +109,7 @@ class CreationModal extends Component {
           <div className='global-modal-body'>
             <div className='global-modal-group-container'>
               <span className='global-form-label'>Nombre responsable</span>
-              <span className='global-modal-text'>
-                {/* {this.props.borrowing.user_name} */}
-              </span>
+              <span className='global-modal-text'>{this.state.user_name}</span>
             </div>
             <div className='global-modal-group-container'>
               <span className='global-form-label'>Bodega</span>
@@ -105,17 +133,10 @@ class CreationModal extends Component {
               <select
                 id='physical_state'
                 className='global-form-input-select'
+                defaultValue={'Funcional'}
                 value={this.state.physical_state}
                 onChange={this.handleChange}
               >
-                <option
-                  value=''
-                  className='global-form-input-select-option'
-                  selected={true}
-                  disabled={true}
-                >
-                  Seleccione un estado...
-                </option>
                 {setSelectOptions(STATES)}
               </select>
             </div>
@@ -141,6 +162,7 @@ class CreationModal extends Component {
               <button
                 className='global-form-solid-button'
                 style={{ height: '30px' }}
+                onClick={this.createReturning}
               >
                 Enviar
               </button>

@@ -32,6 +32,8 @@ export const STATES = [
 
 // SERVICES
 export const HOST = REACT_APP_HOST
+  ? REACT_APP_HOST
+  : 'http://localhost:3001/api/'
 export const LOGIN = 'user/login'
 export const CREATE_USER = 'user/create'
 export const CREATE_WAREHOUSE = 'warehouse/create'
@@ -43,6 +45,7 @@ export const LIST_ARTICLES = 'article/list'
 export const CREATE_BORROWING = 'borrowing/create'
 export const LIST_BORROWINGS = 'borrowing/list'
 export const BORROWING_BY_ID = 'borrowing/id'
+export const CREATE_RETURNING = 'returning/create'
 
 // ALERTS
 export const MANDATORY_MESSAGE =
