@@ -1,8 +1,8 @@
 import React, { Component } from 'react'
 import './Styles.css'
 
-import Modal from './Modal'
-// import { getBorrowings } from '../../Functions/Get'
+import AuthModal from './AuthModal'
+import { getBorrowings } from '../../Functions/Get'
 
 class AuthBorrowingRequest extends Component {
   constructor() {
@@ -38,7 +38,7 @@ class AuthBorrowingRequest extends Component {
 
   // Functions to handle modal
   showModal = () => {
-    return this.props.showModal(<Modal closeModal={this.closeModal} />)
+    return this.props.showModal(<AuthModal closeModal={this.closeModal} />)
   }
 
   closeModal = () => {

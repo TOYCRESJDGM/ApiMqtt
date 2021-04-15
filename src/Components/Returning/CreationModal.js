@@ -1,15 +1,32 @@
 import React, { Component } from 'react'
 
 import { setSelectOptions } from '../../Functions/Helpers'
-import { STATES } from '../../Functions/Constants'
+import { getElementById } from '../../Functions/Get'
+import { postRequest } from '../../Functions/Post'
+import {
+  BORROWING_BY_ID,
+  CREATE_RETURNING,
+  STATES,
+} from '../../Functions/Constants'
 
 class CreationModal extends Component {
   constructor() {
     super()
     this.state = {
-      physical_state: '',
+      // Information states
+      user_name: '',
+      warehouse_name: '',
+      article_list: [],
+
+      // Form states
+      physical_state: 'Funcional',
       obs: '',
     }
+  }
+
+  componentDidMount() {
+    let path = BORROWING_BY_ID + '?borrowing_id=' + this.props.borrowing_id
+    return getElementById(path, this.setBorrowingInformation)
   }
 
   // Functions to handle states
@@ -25,18 +42,57 @@ class CreationModal extends Component {
     return this.props.closeModal()
   }
 
+  // Functions related to requests
+  setBorrowingInformation = (response, body) => {
+    if (response == 'success') {
+      document.getElementById('modal').style.display = 'block'
+
+      let array = body.article_list
+      let list = []
+
+      for (let i = 0; i < array.length; i++) {
+        let obj = array[i].Articulo
+
+        list.push(obj.Tipo.article_type_name + ' - ' + obj.label)
+      }
+
+      return this.setState({
+        user_name: body.Asociado.user_name,
+        warehouse_name: body.article_list[0].Articulo.Bodega.warehouse_name,
+        article_list: list,
+      })
+    }
+
+    this.props.handleAlerts(response, body)
+
+    return this.props.closeModal()
+  }
+
+  responseHandler = (response, body) => {
+    this.props.handleAlerts(response, body)
+    return this.props.closeModal()
+  }
+
+  createReturning = () => {
+    let body = {
+      state: this.state.physical_state,
+      obs: this.state.obs,
+      borrowing_fk: this.props.borrowing_id,
+      auth_user_fk: sessionStorage.getItem('user_id'),
+    }
+
+    postRequest(CREATE_RETURNING, body, this.responseHandler)
+  }
+
   // Auxiliary functions
   setArticleList() {
-    let articles = this.props.borrowing.article_list
+    let articles = this.state.article_list
 
     let list = []
     for (let i = 0; i < articles.length; i++) {
-      let a = articles[i]
       list.push(
-        <li>
-          <span className='global-modal-text'>
-            {a.article_type_name + ': ' + a.article_label}
-          </span>
+        <li key={articles[i]}>
+          <span className='global-modal-text'>{articles[i]}</span>
         </li>
       )
     }
@@ -48,11 +104,15 @@ class CreationModal extends Component {
     let article_list = this.setArticleList()
 
     return (
-      <div class='global-modal-background'>
-        <div class='global-modal-container'>
+      <div
+        id='modal'
+        className='global-modal-background'
+        style={{ display: 'none' }}
+      >
+        <div className='global-modal-container'>
           <div className='global-modal-header'>
             <span className='global-modal-title'>
-              Crear constancia para solicitud # {this.props.borrowing.id}
+              Crear constancia para solicitud # {this.props.borrowing_id}
             </span>
             <img
               className='global-modal-icon'
@@ -64,14 +124,12 @@ class CreationModal extends Component {
           <div className='global-modal-body'>
             <div className='global-modal-group-container'>
               <span className='global-form-label'>Nombre responsable</span>
-              <span className='global-modal-text'>
-                {this.props.borrowing.user_name}
-              </span>
+              <span className='global-modal-text'>{this.state.user_name}</span>
             </div>
             <div className='global-modal-group-container'>
               <span className='global-form-label'>Bodega</span>
               <span className='global-modal-text'>
-                {this.props.borrowing.warehouse_name}
+                {this.state.warehouse_name}
               </span>
             </div>
             <div
@@ -90,17 +148,10 @@ class CreationModal extends Component {
               <select
                 id='physical_state'
                 className='global-form-input-select'
+                defaultValue={'Funcional'}
                 value={this.state.physical_state}
                 onChange={this.handleChange}
               >
-                <option
-                  value=''
-                  className='global-form-input-select-option'
-                  selected={true}
-                  disabled={true}
-                >
-                  Seleccione un estado...
-                </option>
                 {setSelectOptions(STATES)}
               </select>
             </div>
@@ -126,6 +177,7 @@ class CreationModal extends Component {
               <button
                 className='global-form-solid-button'
                 style={{ height: '30px' }}
+                onClick={this.createReturning}
               >
                 Enviar
               </button>
