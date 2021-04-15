@@ -229,7 +229,7 @@ export function getElementById(path, responseHandler) {
     .then(handleErrors)
     .then((res) => res.json())
     .then((response) => {
-      responseHandler('success', response.rows[0])
+      responseHandler('success', response[0])
     })
     .catch((error) => responseHandler('error', error))
 }
