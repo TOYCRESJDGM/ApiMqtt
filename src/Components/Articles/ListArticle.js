@@ -3,11 +3,16 @@ import './Styles.css'
 
 import Alert from '../Alerts/Alert'
 import Modal from './Modal'
-import { getArticles, getWarehouses, getAllArticleTypes } from '../../Functions/Get'
+import {
+  getArticles,
+  getWarehouses,
+  getAllArticleTypes,
+} from '../../Functions/Get'
 import { setSelectOptions } from '../../Functions/Helpers'
-import { AVAILABILITIES,
+import {
+  AVAILABILITIES,
   ALERT_TIMEOUT,
-  NON_ITEM_MESSAGE
+  NON_ITEM_MESSAGE,
 } from '../../Functions/Constants'
 
 class ListArticle extends Component {
@@ -67,18 +72,17 @@ class ListArticle extends Component {
     return this.setState({ [attribute]: value })
   }
 
-  componentDidMount(event) {
+  componentDidMount() {
     let warehouse = ''
     let article_type_fk = ''
 
-    getArticles(
-      warehouse,
-      article_type_fk,
-      this.state.value,
-      this.setArticles
-    )
+    getArticles(warehouse, article_type_fk, this.state.value, this.setArticles)
     getWarehouses(this.setWarehouses)
     getAllArticleTypes(this.setArticleTypes)
+  }
+
+  componentWillUnmount() {
+    clearTimeout(this.state.timeout)
   }
 
   // Functions to handle states
@@ -88,9 +92,8 @@ class ListArticle extends Component {
       if (!this.state.warehouse_fk) {
         if (!this.state.available_state_fk) {
           return this.setState({ articles: body })
-        }
-        else {
-          for (let z=0; z < body.length; z++) {
+        } else {
+          for (let z = 0; z < body.length; z++) {
             if (body[z]['available_state'] == this.state.available_state_fk) {
               temp.push(body[z])
             }
@@ -99,12 +102,11 @@ class ListArticle extends Component {
         }
       }
 
-      for (let x=0; x < body.length; x++) {
+      for (let x = 0; x < body.length; x++) {
         if (body[x]['warehouse_fk'] == this.state.warehouse_fk) {
           if (!this.state.available_state_fk) {
             temp.push(body[x])
-          }
-          else {
+          } else {
             if (body[x]['available_state'] == this.state.available_state_fk) {
               temp.push(body[x])
             }
@@ -116,7 +118,7 @@ class ListArticle extends Component {
         this.setState({ articles: temp })
         return this.buildAlert('attention', NON_ITEM_MESSAGE)
       }
-      
+
       return this.setState({ articles: temp })
     }
 
@@ -135,7 +137,10 @@ class ListArticle extends Component {
     }
 
     if (body == 'No items' || body.message == 'Not Found') {
-      return this.buildAlert('attention', 'No hay bodegas registradas en el sistema.')
+      return this.buildAlert(
+        'attention',
+        'No hay bodegas registradas en el sistema.'
+      )
     }
 
     return alert(ERROR_MESSAGE)
@@ -150,7 +155,10 @@ class ListArticle extends Component {
       document.getElementById('article_type_fk').disabled = true
       this.setState({ article_types: [] })
 
-      return this.buildAlert('attention', 'Aun no ha registrado algun tipo de artículo.')
+      return this.buildAlert(
+        'attention',
+        'No hay tipos de artículo para esta selección.'
+      )
     }
   }
 
@@ -194,35 +202,40 @@ class ListArticle extends Component {
           <td>{obj.branch}</td>
           <td>{obj.available_state}</td>
           <td>{obj.physical_state}</td>
-          { obj.obs ?
-          <td>
-            <span className='global-table-link' onClick={ () => this.showModal(obj.name,obj.label,obj.obs) }>
-              Ver más
-            </span>
-          </td>
-          :
-          <td>
-            <span className='global-table-link' style={{ color: '#999999' }}>
-              N/A
-            </span>
-          </td>
-          }
+          {obj.obs ? (
+            <td>
+              <span
+                className='global-table-link'
+                onClick={() => this.showModal(obj.name, obj.label, obj.obs)}
+              >
+                Ver más
+              </span>
+            </td>
+          ) : (
+            <td>
+              <span className='global-table-link' style={{ color: '#999999' }}>
+                N/A
+              </span>
+            </td>
+          )}
         </tr>
       )
     }
 
     let table = (
       <table>
-        <tr>
-          <th>Rótulo</th>
-          <th>Clasificación</th>
-          <th>Tipo de artículo</th>
-          <th>Rama</th>
-          <th>Disponibilidad</th>
-          <th>Estado</th>
-          <th>Observaciones</th>
-        </tr>
-        {table_rows}
+        <tbody>
+          <tr>
+            <th>Rótulo</th>
+            <th>Clasificación</th>
+            <th>Tipo de artículo</th>
+            <th>Rama</th>
+            <th>Disponibilidad</th>
+            <th>Estado</th>
+            <th>Observaciones</th>
+          </tr>
+          {table_rows}
+        </tbody>
       </table>
     )
 
@@ -230,7 +243,9 @@ class ListArticle extends Component {
   }
 
   showModal(name, label, obs) {
-    return this.props.showModal(<Modal name={name} label={label} obs={obs} closeModal={this.closeModal} />)
+    return this.props.showModal(
+      <Modal name={name} label={label} obs={obs} closeModal={this.closeModal} />
+    )
   }
 
   closeModal = () => {
@@ -243,11 +258,10 @@ class ListArticle extends Component {
     return (
       <div className='cu-container'>
         {this.state.alert}
-        <span className='global-comp-title'>
-          Lista de artículos
-        </span>
+        <span className='global-comp-title'>Lista de artículos</span>
         <span className='global-comp-description'>
-          Aquí podrá listar todos los artículos en existencia. utilice las listas desplegables para filtrar los elementos.
+          Aquí podrá listar todos los artículos en existencia. utilice las
+          listas desplegables para filtrar los elementos.
         </span>
         <div className='global-comp-form-container'>
           <div className='global-special-form-group'>
@@ -257,9 +271,7 @@ class ListArticle extends Component {
               value={this.state.warehouse_fk}
               onChange={this.handleChange}
             >
-              <option value={''} selected={true} >
-                Todas las bodegas...
-              </option>
+              <option value=''>Todas las bodegas...</option>
               {setSelectOptions(this.state.warehouses)}
             </select>
             <select
@@ -268,9 +280,7 @@ class ListArticle extends Component {
               value={this.state.article_type_fk}
               onChange={this.handleChange}
             >
-              <option value={''} selected={true} >
-                Todos los tipos de artículos...
-              </option>
+              <option value=''>Todos los tipos de artículos...</option>
               {setSelectOptions(this.state.article_types)}
             </select>
             <select
@@ -279,9 +289,7 @@ class ListArticle extends Component {
               value={this.state.available_state_fk}
               onChange={this.handleChange}
             >
-              <option value={''} selected={true} >
-                Todos los estados de disponibilidad...
-              </option>
+              <option value=''>Todos los estados de disponibilidad...</option>
               {setSelectOptions(AVAILABILITIES)}
             </select>
           </div>
