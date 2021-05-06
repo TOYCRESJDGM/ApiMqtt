@@ -31,9 +31,9 @@ export const STATES = [
 ]
 
 export const ROL_TYPES = [
-  { name: 'administrador', value: 'Administrador' },
-  { name: 'jefe de bodega', value: 'Jefe de Bodega' },
-  { name: 'jefe de rama', value: 'Jefe de Rama' },
+  { name: 'Administrador', value: 'administrador' },
+  { name: 'Jefe de Bodega', value: 'jefe de bodega' },
+  { name: 'Jefe de Rama', value: 'jefe de rama' },
 ]
 
 // SERVICES

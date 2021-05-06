@@ -288,7 +288,7 @@ class CreateUser extends Component {
                 value=''
                 disabled={true}
               >
-                Seleccione una rama...
+                Seleccione un rol...
               </option>
               {setSelectOptions(ROL_TYPES)}
             </select>
