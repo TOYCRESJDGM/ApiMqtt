@@ -10,6 +10,7 @@ export function setOptionsByRol(rol, collapse, changeSelected) {
         src='./arrow_gray.png'
         alt='arrow'
         onClick={collapse}
+        style={{ cursor: 'pointer' }}
       />
     </div>
   )
@@ -24,6 +25,7 @@ export function setOptionsByRol(rol, collapse, changeSelected) {
         src='./arrow_gray.png'
         alt='arrow'
         onClick={collapse}
+        style={{ cursor: 'pointer' }}
       />
     </div>
   )
@@ -38,6 +40,7 @@ export function setOptionsByRol(rol, collapse, changeSelected) {
         src='./arrow_gray.png'
         alt='arrow'
         onClick={collapse}
+        style={{ cursor: 'pointer' }}
       />
     </div>
   )
@@ -52,6 +55,7 @@ export function setOptionsByRol(rol, collapse, changeSelected) {
         src='./arrow_gray.png'
         alt='arrow'
         onClick={collapse}
+        style={{ cursor: 'pointer' }}
       />
     </div>
   )
@@ -66,6 +70,7 @@ export function setOptionsByRol(rol, collapse, changeSelected) {
         src='./arrow_gray.png'
         alt='arrow'
         onClick={collapse}
+        style={{ cursor: 'pointer' }}
       />
     </div>
   )
@@ -80,6 +85,7 @@ export function setOptionsByRol(rol, collapse, changeSelected) {
         src='./arrow_gray.png'
         alt='arrow'
         onClick={collapse}
+        style={{ cursor: 'pointer' }}
       />
     </div>
   )
