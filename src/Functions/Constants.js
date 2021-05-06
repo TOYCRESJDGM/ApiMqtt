@@ -30,6 +30,12 @@ export const STATES = [
   { name: 'No funcional', value: 'No funcional' },
 ]
 
+export const ROL_TYPES = [
+  { name: 'Administrador', value: 'administrador' },
+  { name: 'Jefe de Bodega', value: 'jefe de bodega' },
+  { name: 'Jefe de Rama', value: 'jefe de rama' },
+]
+
 // SERVICES
 export const HOST = REACT_APP_HOST
   ? REACT_APP_HOST
@@ -60,8 +66,7 @@ export const ERROR_MESSAGE =
   'Ha ocurrido un error. Por favor intente más tarde.'
 export const EMAIL_MESSAGE =
   'El formato del correo electrónico no es válido. Por favor verifique.'
-export const NON_ITEM_MESSAGE =
-  'No hay ningun artículo para esta selección.'
+export const NON_ITEM_MESSAGE = 'No hay ningun artículo para esta selección.'
 export const ALERT_TIMEOUT = 6000
 
 // OTHERS

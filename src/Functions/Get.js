@@ -35,6 +35,9 @@ export function getWarehouses(responseHandler) {
 
   fetch(url, {
     method: 'GET',
+    headers: {
+      token: sessionStorage.getItem('token'),
+    },
   })
     .then(handleErrors)
     .then((res) => res.json())
@@ -91,6 +94,9 @@ export function getArticleTypes(classif, responseHandler) {
   let url = HOST + ARTICLE_TYPE_LIST + '?classif=' + classif
   fetch(url, {
     method: 'GET',
+    headers: {
+      token: sessionStorage.getItem('token'),
+    },
   })
     .then(handleErrors)
     .then((res) => res.json())
@@ -132,6 +138,9 @@ export function getArticles(warehouse, article_type, branch, responseHandler) {
 
   fetch(url, {
     method: 'GET',
+    headers: {
+      token: sessionStorage.getItem('token'),
+    },
   })
     .then(handleErrors)
     .then((res) => res.json())
@@ -180,6 +189,9 @@ export function getBorrowings(responseHandler) {
 
   fetch(url, {
     method: 'GET',
+    headers: {
+      token: sessionStorage.getItem('token'),
+    },
   })
     .then(handleErrors)
     .then((res) => res.json())
@@ -213,6 +225,9 @@ export function getFilteredBorrowings(responseHandler) {
 
   fetch(url, {
     method: 'GET',
+    headers: {
+      token: sessionStorage.getItem('token'),
+    },
   })
     .then(handleErrors)
     .then((res) => res.json())
@@ -259,6 +274,9 @@ export function getElementById(path, responseHandler) {
 
   fetch(url, {
     method: 'GET',
+    headers: {
+      token: sessionStorage.getItem('token'),
+    },
   })
     .then(handleErrors)
     .then((res) => res.json())
@@ -273,6 +291,9 @@ export function getAllArticleTypes(responseHandler) {
 
   fetch(url, {
     method: 'GET',
+    headers: {
+      token: sessionStorage.getItem('token'),
+    },
   })
     .then(handleErrors)
     .then((res) => res.json())
@@ -314,6 +335,9 @@ export function getReturnings(responseHandler) {
 
   fetch(url, {
     method: 'GET',
+    headers: {
+      token: sessionStorage.getItem('token'),
+    },
   })
     .then(handleErrors)
     .then((res) => res.json())
