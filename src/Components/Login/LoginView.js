@@ -3,11 +3,12 @@ import './Styles.css'
 
 import Alert from '../Alerts/Alert'
 import { validateEmail } from '../../Functions/Helpers'
-import { postRequest } from '../../Functions/Post'
+import { simpleRequest } from '../../Functions/Post'
 import {
   LOGIN,
   ERROR_MESSAGE,
   EMAIL_MESSAGE,
+  INVALID_LOGIN_ERROR,
   ALERT_TIMEOUT,
 } from '../../Functions/Constants'
 
@@ -67,7 +68,7 @@ class LoginView extends Component {
       return this.props.changeView('Menu')
     }
 
-    if (body == 'Error: Unauthorized') {
+    if (body == INVALID_LOGIN_ERROR) {
       return this.buildAlert(
         'attention',
         'El correo electrónico o la contraseña es incorrecta. Por favor intente de nuevo.'
@@ -104,7 +105,7 @@ class LoginView extends Component {
       password: this.state.password,
     }
 
-    return postRequest(LOGIN, body, this.responseHandler)
+    return simpleRequest(LOGIN, 'POST', body, this.responseHandler)
   }
 
   // Auxiliary functions
