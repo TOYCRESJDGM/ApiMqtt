@@ -19,6 +19,7 @@ import ModifyReturning from '../Returning/ModifyReturning'
 
 import { setOptionsByRol } from '../../Functions/MenuOptions'
 import { parseOptionToStatic } from '../../Functions/Helpers'
+import ListReturnings from '../Returning/ListReturnings'
 
 class MenuView extends Component {
   constructor() {
@@ -150,7 +151,13 @@ class MenuView extends Component {
         )
       case 13:
         // LIST RETURNINGS
-        return <div></div>
+        return (
+          <ListReturnings 
+            changeSelected={this.changeSelectedFromComponent}
+            showModal={this.showModal}
+            closeModal={this.closeModal}
+          />
+        )
       case 14:
         return (
           <CreateReturning
