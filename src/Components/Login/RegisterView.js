@@ -5,19 +5,23 @@ import Alert from '../Alerts/Alert'
 import { validateEmail } from '../../Functions/Helpers'
 import { simpleRequest } from '../../Functions/Post'
 import {
-  LOGIN,
+  REGISTER_USER,
   ERROR_MESSAGE,
   EMAIL_MESSAGE,
-  INVALID_LOGIN_ERROR,
   ALERT_TIMEOUT,
+  USED_EMAIL_ERROR
 } from '../../Functions/Constants'
 
-class LoginView extends Component {
+class RegisterView extends Component {
   constructor() {
     super()
     this.state = {
       email: '',
       password: '',
+      node: '',
+      phone: '',
+      name: '',
+      rol:'',
       alert: '',
       timeout: '',
     }
@@ -58,32 +62,28 @@ class LoginView extends Component {
 
   // Functions related to requests
   responseHandler = (response, body) => {
-    if (response == 'success' && body.hasOwnProperty('token')) {
-      sessionStorage.setItem('token', body.token)
-      sessionStorage.setItem('user_id', body.user.id)
-      sessionStorage.setItem('user_rol', body.user.rol)
-      sessionStorage.setItem('user_name', body.user.name)
-      sessionStorage.setItem('user_email', body.user.email)
-      sessionStorage.setItem('user_node', body.user.node)
-
-      return this.props.changeView('Menu')
+    console.log(response)
+    if (response == 'success') {
+        sessionStorage.removeItem('users')
+        setTimeout(() =>  this.buildAlert('success', 'Usuario creado con éxito.', 10))
+        return
     }
 
-    if (body == INVALID_LOGIN_ERROR) {
+    if (body == USED_EMAIL_ERROR) {
       return this.buildAlert(
         'attention',
-        'El correo electrónico o la contraseña es incorrecta. Por favor intente de nuevo.'
+        'El correo electrónico ya se encuentra en uso.'
       )
     }
 
     return this.buildAlert('error', ERROR_MESSAGE)
   }
 
-  login = () => {
+  register = () => {
     this.close()
 
     // Verify that the required fields are filled
-    if (!this.state.email || !this.state.password) {
+    if (!this.state.email || !this.state.password || !this.state.phone || !this.state.node || !this.state.name) {
       setTimeout(
         () =>
           this.buildAlert(
@@ -104,17 +104,13 @@ class LoginView extends Component {
     let body = {
       email: this.state.email,
       password: this.state.password,
+      phone: this.state.phone,
+      node: this.state.node,
+      name: this.state.name,
+      rol: "usuario"
     }
 
-    return simpleRequest(LOGIN, 'POST', body, this.responseHandler)
-  }
-
-  recover = () => {
-    return this.props.changeView('Recover')
-  }
-
-  register = () =>{
-    return this.props.changeView('Register')
+    return simpleRequest(REGISTER_USER, 'POST', body, this.responseHandler)
   }
 
   // Auxiliary functions
@@ -138,21 +134,85 @@ class LoginView extends Component {
 
   render() {
     return (
-      <div className='lg-container'>
+      <div className='rg-container'>
         {this.state.alert}
-        <div className='lg-card'>
+        <div className='rg-card'>
           <div className='lg-content'>
             {/* HEADER */}
-            <div className='lg-header'>
+            <div className='rg-header'>
               <span className='lg-title'>
-                Formulario de ingreso
+                Formulario de Registro
               </span>
               <span className='lg-text'>
-                Inicie sesión con correo electrónico y contraseña
+                Por favor diligencie los campos de registro.
               </span>
             </div>
             {/* FORM */}
+            
             <div className='lg-form'>
+              <span className='global-form-label'>Nombre de usuario</span>
+              <div
+                className='global-form-input-group'
+                style={{ marginTop: '5px' }}
+              >
+                <div className='global-form-img-container'>
+                  <img
+                    className='global-form-img'
+                    src='./person_gray.png'
+                    alt='person'
+                  />
+                </div>
+                <input
+                  id='name'
+                  className='global-form-input'
+                  type='text'
+                  style={{ marginBottom: '20px' }}
+                  value={this.state.name}
+                  onChange={this.handleChange}
+                />
+              </div>
+              <span className='global-form-label'>Nodo</span>
+              <div
+                className='global-form-input-group'
+                style={{ marginTop: '5px' }}
+              >
+                <div className='global-form-img-container'>
+                  <img
+                    className='global-form-img'
+                    src='./articles_gray.png'
+                    alt='node'
+                  />
+                </div>
+                <input
+                  id='node'
+                  className='global-form-input'
+                  type='text'
+                  style={{ marginBottom: '20px' }}
+                  value={this.state.node}
+                  onChange={this.handleChange}
+                />
+              </div>
+              <span className='global-form-label'>Telefono</span>
+              <div
+                className='global-form-input-group'
+                style={{ marginTop: '5px' }}
+              >
+                <div className='global-form-img-container'>
+                  <img
+                    className='global-form-img'
+                    src='./phone_black.png'
+                    alt='person'
+                  />
+                </div>
+                <input
+                  id='phone'
+                  className='global-form-input'
+                  type='text'
+                  style={{ marginBottom: '20px' }}
+                  value={this.state.phone}
+                  onChange={this.handleChange}
+                />
+              </div>
               <span className='global-form-label'>Correo electrónico</span>
               <div
                 className='global-form-input-group'
@@ -208,18 +268,10 @@ class LoginView extends Component {
                   />
                 </div>
               </div>
-              <button className='lg-button' onClick={this.login}>
-                Ingresar
-              </button>
               <button className='lg-button' onClick={this.register}>
                 Registro
               </button>
             </div>
-            <span className='lg-link'
-            onClick={this.recover}
-            style={{ cursor: 'pointer' }}>
-              ¿Olvidaste tu contraseña?
-            </span>
             {/* LEGEND */}
             <div className='lg-logo-container'>
               <img className='lg-logo' src='./logo.png' alt='logo' />
@@ -231,4 +283,4 @@ class LoginView extends Component {
   }
 }
 
-export default LoginView
+export default RegisterView

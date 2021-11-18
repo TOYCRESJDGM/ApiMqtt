@@ -15,7 +15,6 @@ import {
   ERROR_MESSAGE,
   USED_EMAIL_ERROR,
   ALERT_TIMEOUT,
-  BRANCHES,
   ROL_TYPES,
   INVALID_STRING_MESSAGE,
 } from '../../Functions/Constants'
@@ -25,8 +24,8 @@ class CreateUser extends Component {
     super()
     this.state = {
       email: '',
-      user_name: '',
-      branch: '',
+      name: '',
+      node: '',
       rol: '',
       phone: '',
       password: '',
@@ -49,7 +48,7 @@ class CreateUser extends Component {
       value = value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1')
     } else if (attribute == 'email') {
       value = value.toLowerCase()
-    } else if (attribute == 'user_name') {
+    } else if (attribute == 'name') {
       value = value.toUpperCase()
     }
 
@@ -59,8 +58,8 @@ class CreateUser extends Component {
   clearInputs = () => {
     return this.setState({
       email: '',
-      user_name: '',
-      branch: '',
+      name: '',
+      node: '',
       rol: '',
       phone: '',
       password: '',
@@ -122,7 +121,7 @@ class CreateUser extends Component {
     // Verify strings
     if (
       !validateString(this.state.email) ||
-      !validateString(this.state.user_name) ||
+      !validateString(this.state.name) ||
       !validateString(this.state.phone) ||
       !validateString(this.state.password)
     ) {
@@ -145,8 +144,8 @@ class CreateUser extends Component {
 
     let body = {
       email: this.state.email,
-      user_name: this.state.user_name,
-      branch: this.state.branch,
+      name: this.state.name,
+      node: this.state.node,
       rol: this.state.rol,
       phone: this.state.phone,
       password: this.state.password,
@@ -161,11 +160,7 @@ class CreateUser extends Component {
       return false
     }
 
-    if (!this.state.user_name) {
-      return false
-    }
-
-    if (!this.state.branch) {
+    if (!this.state.name) {
       return false
     }
 
@@ -233,10 +228,10 @@ class CreateUser extends Component {
               <strong className='global-form-mandatory'> *</strong>
             </span>
             <input
-              id='user_name'
+              id='name'
               type='text'
               className='global-form-input'
-              value={this.state.user_name}
+              value={this.state.name}
               onChange={this.handleChange}
             />
           </div>
@@ -271,24 +266,15 @@ class CreateUser extends Component {
 
           <div className='global-form-group'>
             <span className='global-form-label'>
-              Rama
-              <strong className='global-form-mandatory'> *</strong>
+              Nodo
             </span>
-            <select
-              id='branch'
-              className='global-form-input-select'
-              value={this.state.branch}
+            <input
+              id='node'
+              type='text'
+              className='global-form-input'
+              value={this.state.node}
               onChange={this.handleChange}
-            >
-              <option
-                className='global-form-input-select-option'
-                value=''
-                disabled={true}
-              >
-                Seleccione una rama...
-              </option>
-              {setSelectOptions(BRANCHES)}
-            </select>
+            />
           </div>
 
           <div className='global-form-group'>

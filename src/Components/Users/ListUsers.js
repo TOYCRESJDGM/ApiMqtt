@@ -10,7 +10,6 @@ import {
   NO_ITEMS_ERROR,
   NO_ITEM_MESSAGE,
   ERROR_MESSAGE,
-  BRANCHES,
   ROL_TYPES,
 } from '../../Functions/Constants'
 
@@ -21,7 +20,6 @@ class ListUsers extends Component {
       users: [],
       filtered_users: [],
       rol: 'all',
-      branch: 'all',
 
       // Auxiliary form states
       alert: '',
@@ -90,20 +88,14 @@ class ListUsers extends Component {
   // Auxiliary functions
   filterUsers(attribute, value) {
     let rol = 'all'
-    let branch = 'all'
 
     if (attribute == 'rol') {
       rol = value
-      branch = this.state.branch
-    } else {
-      rol = this.state.rol
-      branch = value
     }
 
     let filtered_by_rol = this.filterByRol(rol, this.state.users)
-    let filtered_by_branch = this.filterByBranch(branch, filtered_by_rol)
 
-    return this.setState({ filtered_users: filtered_by_branch })
+    return this.setState({ filtered_users: filtered_by_rol })
   }
 
   filterByRol(rol, array) {
@@ -116,23 +108,6 @@ class ListUsers extends Component {
     for (let i = 0; i < array.length; i++) {
       let obj = array[i]
       if (obj.rol == rol) {
-        filtered_array.push(obj)
-      }
-    }
-
-    return filtered_array
-  }
-
-  filterByBranch(branch, array) {
-    if (branch == 'all') {
-      return array
-    }
-
-    let filtered_array = []
-
-    for (let i = 0; i < array.length; i++) {
-      let obj = array[i]
-      if (obj.branch == branch) {
         filtered_array.push(obj)
       }
     }
@@ -158,10 +133,10 @@ class ListUsers extends Component {
       table_rows.push(
         <tr key={'tr' + obj.id}>
           <td>{obj.id}</td>
-          <td>{obj.user_name}</td>
+          <td>{obj.name}</td>
+          <td>{obj.node}</td>
           <td>{obj.email}</td>
           <td>{obj.phone}</td>
-          <td>{obj.branch}</td>
           <td style={{ textTransform: 'capitalize' }}>{obj.rol}</td>
           <td>
             <span
@@ -181,10 +156,10 @@ class ListUsers extends Component {
         <tbody>
           <tr>
             <th>ID</th>
-            <th>Nombre completo</th>
+            <th>Nombre</th>
+            <th>Nodo</th>
             <th>Correo electrónico</th>
             <th>Teléfono</th>
-            <th>Rama</th>
             <th>Rol</th>
             <th>Acciones</th>
           </tr>
@@ -204,7 +179,7 @@ class ListUsers extends Component {
         {this.state.alert}
         <span className='global-comp-title'>Lista de usuarios</span>
         <span className='global-comp-description'>
-          Aquí podrá listar todos los usuarios de la aplicación de inventario.
+          Aquí podrá listar todos los usuarios de la aplicación.
           Utilice las listas desplegables para filtrar los elementos.
         </span>
         <div className='global-comp-form-container'>
@@ -217,15 +192,6 @@ class ListUsers extends Component {
             >
               <option value='all'>Todos los roles</option>
               {setSelectOptions(ROL_TYPES)}
-            </select>
-            <select
-              id='branch'
-              className='global-special-sec-form-input-select'
-              value={this.state.branch}
-              onChange={this.handleChange}
-            >
-              <option value='all'>Todas las ramas</option>
-              {setSelectOptions(BRANCHES)}
             </select>
           </div>
           {table}

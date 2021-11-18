@@ -4,22 +4,12 @@ import './Styles.css'
 import ListUsers from '../Users/ListUsers'
 import CreateUser from '../Users/CreateUser'
 import ModifyUser from '../Users/ModifyUser'
-import CreateArticleType from '../ArticleType/CreateArticleType'
-import CreateWarehouse from '../Warehouses/CreateWarehouse'
-import ListArticle from '../Articles/ListArticle'
-import CreateArticle from '../Articles/CreateArticle'
-import ModifyArticle from '../Articles/ModifyArticle'
-import ListBorrowings from '../Borrowing/ListBorrowings'
-import CreateBorrowing from '../Borrowing/CreateBorrowing'
-import AuthBorrowingRequest from '../Borrowing/AuthBorrowingRequest'
-import ModifyBorrowing from '../Borrowing/ModifyBorrowing'
-import CreateReturning from '../Returning/CreateReturning'
-import AuthReturningRequest from '../Returning/AuthReturningRequest'
-import ModifyReturning from '../Returning/ModifyReturning'
-
+import ListData from '../Data/ListData'
+import ListAllData from '../Data/ListAllData'
+import PublicListAlert from '../Notifications/PublicListAlert'
+import ListBorrowings from '../Notifications/ListAlert'
 import { setOptionsByRol } from '../../Functions/MenuOptions'
 import { parseOptionToStatic } from '../../Functions/Helpers'
-import ListReturnings from '../Returning/ListReturnings'
 
 class MenuView extends Component {
   constructor() {
@@ -41,10 +31,9 @@ class MenuView extends Component {
       case 'administrador':
         id = id + 1
         break
-
-      case 'jefe de bodega':
-        id = id + 3
-        num = 5
+      
+      case 'ente gubernamental':
+        id = id + 5
         break
 
       default:
@@ -54,7 +43,7 @@ class MenuView extends Component {
     }
 
     this.setState({ selected: num })
-
+    console.log(num)
     let component = document.getElementById(id)
     component.style.display = 'block'
     document.getElementById(num).className = 'm-menu-label selected'
@@ -114,22 +103,22 @@ class MenuView extends Component {
         return <CreateUser />
       case 3:
         return <ModifyUser />
-      case 4:
-        return <CreateWarehouse />
-      case 5:
-        return <CreateArticleType />
       case 6:
         return (
-          <ListArticle
+          <ListData
             changeSelected={this.changeSelectedFromComponent}
             showModal={this.showModal}
             closeModal={this.closeModal}
           />
         )
       case 7:
-        return <CreateArticle />
-      case 8:
-        return <ModifyArticle />
+        return (
+          <ListAllData
+            changeSelected={this.changeSelectedFromComponent}
+            showModal={this.showModal}
+            closeModal={this.closeModal}
+          />
+        )
       case 9:
         return (
           <ListBorrowings
@@ -139,38 +128,9 @@ class MenuView extends Component {
           />
         )
       case 10:
-        return <CreateBorrowing />
-      case 11:
-        return <ModifyBorrowing />
-      case 12:
         return (
-          <AuthBorrowingRequest
-            showModal={this.showModal}
-            closeModal={this.closeModal}
-          />
-        )
-      case 13:
-        // LIST RETURNINGS
-        return (
-          <ListReturnings 
+          <PublicListAlert
             changeSelected={this.changeSelectedFromComponent}
-            showModal={this.showModal}
-            closeModal={this.closeModal}
-          />
-        )
-      case 14:
-        return (
-          <CreateReturning
-            showModal={this.showModal}
-            closeModal={this.closeModal}
-          />
-        )
-      case 15:
-        // MODIFY RETURNING
-        return <ModifyReturning />
-      case 16:
-        return (
-          <AuthReturningRequest
             showModal={this.showModal}
             closeModal={this.closeModal}
           />
@@ -220,9 +180,6 @@ class MenuView extends Component {
   getRolOptions() {
     let rol = sessionStorage.getItem('user_rol')
 
-    if (!rol) {
-      rol = 'jefe de rama'
-    }
 
     return setOptionsByRol(rol, this.collapse, this.changeSelected)
   }
@@ -251,8 +208,7 @@ class MenuView extends Component {
         {/* HEADER */}
         <div className='m-header'>
           <div className='m-logo-container'>
-            <img className='m-logo' src='./logo-scouts.png' alt='logo' />
-            <span className='m-label'>Grupo Scout Centinelas 113</span>
+            <img className='m-logo' src='./logo.png' alt='logo' />
           </div>
           <div className='m-loged-user-container' onClick={this.showUserMenu}>
             <div className='m-ellipse'>{name[0]}</div>

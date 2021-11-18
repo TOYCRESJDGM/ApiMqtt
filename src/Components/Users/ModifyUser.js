@@ -17,7 +17,6 @@ import {
   EMAIL_MESSAGE,
   ERROR_MESSAGE,
   ALERT_TIMEOUT,
-  BRANCHES,
   ROL_TYPES,
   INVALID_STRING_MESSAGE,
 } from '../../Functions/Constants'
@@ -29,8 +28,8 @@ class ModifyUser extends Component {
       // Request states
       id: 0,
       email: '',
-      user_name: '',
-      branch: '',
+      name: '',
+      node: '',
       rol: '',
       phone: '',
 
@@ -79,9 +78,6 @@ class ModifyUser extends Component {
         value = value.toLowerCase()
         break
 
-      case 'user_name':
-        value = value.toUpperCase()
-        break
     }
 
     return this.setState({ [attribute]: value })
@@ -91,8 +87,8 @@ class ModifyUser extends Component {
     return this.setState({
       id: 0,
       email: '',
-      user_name: '',
-      branch: '',
+      name: '',
+      node: '',
       rol: '',
       phone: '',
     })
@@ -119,9 +115,9 @@ class ModifyUser extends Component {
   setUserInfo = (response, body) => {
     if (response == 'success') {
       this.setState({
-        user_name: body.user_name,
+        name: body.name,
         email: body.email,
-        branch: body.branch,
+        node: body.node,
         phone: body.phone,
         rol: body.rol,
       })
@@ -170,7 +166,7 @@ class ModifyUser extends Component {
     // Verify strings
     if (
       !validateString(this.state.email) ||
-      !validateString(this.state.user_name) ||
+      !validateString(this.state.name) ||
       !validateString(this.state.phone)
     ) {
       setTimeout(() => this.buildAlert('attention', INVALID_STRING_MESSAGE), 10)
@@ -180,8 +176,8 @@ class ModifyUser extends Component {
     let body = {
       id: this.state.id,
       email: this.state.email,
-      user_name: this.state.user_name,
-      branch: this.state.branch,
+      name: this.state.name,
+      node: this.state.node,
       rol: this.state.rol,
       phone: this.state.phone,
     }
@@ -199,11 +195,7 @@ class ModifyUser extends Component {
       return false
     }
 
-    if (!this.state.user_name) {
-      return false
-    }
-
-    if (!this.state.branch) {
+    if (!this.state.name) {
       return false
     }
 
@@ -254,10 +246,10 @@ class ModifyUser extends Component {
               <strong className='global-form-mandatory'> *</strong>
             </span>
             <input
-              id='user_name'
+              id='name'
               type='text'
               className='global-form-input'
-              value={this.state.user_name}
+              value={this.state.name}
               onChange={this.handleChange}
             />
           </div>
@@ -292,24 +284,15 @@ class ModifyUser extends Component {
 
           <div className='global-form-group'>
             <span className='global-form-label'>
-              Rama
-              <strong className='global-form-mandatory'> *</strong>
+              Nodo
             </span>
-            <select
-              id='branch'
-              className='global-form-input-select'
-              value={this.state.branch}
+            <input
+              id='node'
+              type='text'
+              className='global-form-input'
+              value={this.state.node}
               onChange={this.handleChange}
-            >
-              <option
-                className='global-form-input-select-option'
-                value=''
-                disabled={true}
-              >
-                Seleccione una rama...
-              </option>
-              {setSelectOptions(BRANCHES)}
-            </select>
+            />
           </div>
 
           <div className='global-form-group'>

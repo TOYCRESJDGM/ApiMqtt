@@ -1,12 +1,11 @@
 import {
   HOST,
-  LIST_WAREHOUSES,
-  ARTICLE_TYPE_LIST,
-  LIST_ARTICLES,
-  LIST_BORROWINGS,
+  DATA_LIST,
+  ALERT_LIST,
+  ALERT_PUBLIC_LIST,
+  DATA_ALL_LIST,
   DAY_IN_MS,
   NO_ITEMS_ERROR,
-  INVALID_CLASSIF_ERROR,
 } from './Constants'
 
 function handleErrors(response) {
@@ -48,114 +47,11 @@ function validateResponse(response) {
   return null
 }
 
-// CUSTOM GET REQUEST
-export function getWarehouses(responseHandler) {
-  let data_stored = getFromStorage('warehouses', responseHandler)
-  if (data_stored != null) {
-    return responseHandler('success', data_stored)
-  }
-
-  // Make the request if there is nothing stored
-  let url = HOST + LIST_WAREHOUSES
-  fetch(url, {
-    method: 'GET',
-    headers: {
-      token: sessionStorage.getItem('token'),
-    },
-  })
-    .then(handleErrors)
-    .then((res) => res.json())
-    .then((response) => {
-      let validation = validateResponse(response)
-      if (validation != null) {
-        return responseHandler('error', validation)
-      }
-
-      let warehouses = []
-      let rows = response.rows
-      for (let i = 0; i < rows.length; i++) {
-        let obj = rows[i]
-
-        warehouses.push({ value: obj.id, name: obj.warehouse_name })
-      }
-
-      let json = JSON.stringify(warehouses)
-      sessionStorage.setItem('warehouses', json)
-
-      return responseHandler('success', warehouses)
-    })
-    .catch((error) => responseHandler('error', error))
-}
-
-export function getArticleTypes(classif, responseHandler) {
-  let session_classif = ''
-  switch (classif) {
-    case 'Elementos de cocina':
-      session_classif = 'kitchen'
-      break
-    case 'Elementos de programa':
-      session_classif = 'prog'
-      break
-    case 'Elementos para acampar':
-      session_classif = 'camp'
-      break
-    default:
-      return responseHandler('error', INVALID_CLASSIF_ERROR)
-  }
-
-  let data_stored = getFromStorage(
-    'article_types_' + session_classif,
-    responseHandler
-  )
-  if (data_stored != null) {
-    return responseHandler('success', data_stored)
-  }
-
-  // Make the request if there is nothing stored
-  let url = HOST + ARTICLE_TYPE_LIST + '?classif=' + classif
-  fetch(url, {
-    method: 'GET',
-    headers: {
-      token: sessionStorage.getItem('token'),
-    },
-  })
-    .then(handleErrors)
-    .then((res) => res.json())
-    .then((response) => {
-      let validation = validateResponse(response)
-      if (validation != null) {
-        return responseHandler('error', validation)
-      }
-
-      let article_types = []
-      let rows = response.rows
-      for (let i = 0; i < rows.length; i++) {
-        let obj = rows[i]
-
-        article_types.push({
-          value: obj.id,
-          name: obj.article_type_name,
-          is_parent: obj.is_parent == 1 ? true : false,
-        })
-      }
-
-      let json = JSON.stringify(article_types)
-      sessionStorage.setItem('article_types_' + session_classif, json)
-
-      return responseHandler('success', article_types)
-    })
-    .catch((error) => responseHandler('error', error))
-}
-
-export function getArticles(warehouse, article_type, branch, responseHandler) {
+export function getArticles(node, responseHandler) {
   let params =
-    '?warehouse_id=' +
-    warehouse +
-    '&article_type=' +
-    article_type +
-    '&branch=' +
-    branch
-  let url = HOST + LIST_ARTICLES + params
+    '?node_id=' +
+    node
+  let url = HOST + DATA_LIST + params
 
   fetch(url, {
     method: 'GET',
@@ -171,31 +67,35 @@ export function getArticles(warehouse, article_type, branch, responseHandler) {
         return responseHandler('error', validation)
       }
 
-      let articles = []
+      let data = []
       let rows = response.rows
       for (let i = 0; i < rows.length; i++) {
         let obj = rows[i]
 
-        articles.push({
+        data.push({
           id: obj.id,
-          label: obj.label,
-          branch: obj.branch,
-          available_state: obj.available_state,
-          physical_state: obj.physical_state,
-          obs: obj.obs,
-          name: obj.Tipo.article_type_name,
-          classif: obj.Tipo.classif,
-          warehouse_fk: obj.Bodega.id,
+          node: obj.node,
+          co: obj.co,
+          pm2: obj.pm2,
+          no2: obj.no2,
+          zone: obj.zone,
+          latitude: obj.latitude,
+          length: obj.length,
+          date: obj.createdAt,
         })
       }
 
-      return responseHandler('success', articles)
+      return responseHandler('success', data)
     })
     .catch((error) => responseHandler('error', error))
 }
 
-export function getAllArticleTypes(responseHandler) {
-  let url = HOST + ARTICLE_TYPE_LIST
+export function getAllData(node, responseHandler) {
+  let params =
+    '?node_id=' +
+    node
+  let url = HOST + DATA_ALL_LIST + params
+
   fetch(url, {
     method: 'GET',
     headers: {
@@ -210,30 +110,39 @@ export function getAllArticleTypes(responseHandler) {
         return responseHandler('error', validation)
       }
 
-      let articles = []
+      let data = []
       let rows = response.rows
       for (let i = 0; i < rows.length; i++) {
         let obj = rows[i]
 
-        articles.push({
-          value: obj.id,
-          name: obj.article_type_name,
+        data.push({
+          id: obj.id,
+          node: obj.node,
+          co: obj.co,
+          pm2: obj.pm2,
+          no2: obj.no2,
+          zone: obj.zone,
+          latitude: obj.latitude,
+          length: obj.length,
+          date: obj.createdAt,
         })
       }
 
-      return responseHandler('success', articles)
+      return responseHandler('success', data)
     })
     .catch((error) => responseHandler('error', error))
 }
 
-export function getFilteredBorrowings(responseHandler) {
-  let data_stored = getFromStorage('filtered_borrowings', responseHandler)
-  if (data_stored != null) {
-    return responseHandler('success', data_stored)
-  }
+export function getFilteredNotifications(node, zone, type, responseHandler) {
+  let params =
+    '?node_id=' +
+    node + '&zone=' +
+    zone +
+    '&type=' +
+    type
 
   // Make the request if there is nothing stored
-  let url = HOST + LIST_BORROWINGS + '?has_returning=false'
+  let url = HOST + ALERT_LIST + params
   fetch(url, {
     method: 'GET',
     headers: {
@@ -248,31 +157,50 @@ export function getFilteredBorrowings(responseHandler) {
         return responseHandler('error', validation)
       }
 
-      // Calculation of the delay of a returning
+      let notifications = []
       let rows = response.rows
       for (let i = 0; i < rows.length; i++) {
-        if (Date.parse(rows[i].return_date) > Date.now()) {
-          rows[i].delay = 'No hay retraso'
-        } else {
-          let delay_days =
-            (Date.now() - Date.parse(rows[i].return_date)) / DAY_IN_MS
-          if (delay_days < 1) {
-            rows[i].delay = 'Se debe entregar hoy'
-          } else if (delay_days < 2) {
-            rows[i].delay = 'La entrega está retrasada por 1 día'
-          } else {
-            rows[i].delay =
-              'La entrega está retrasada por ' +
-              Math.trunc(delay_days) +
-              ' días'
-          }
-        }
+        let obj = rows[i]
+
+        notifications.push({
+          id: obj.id,
+          node: obj.node,
+          type: obj.type,
+          ica: obj.ica,
+          description: obj.description,
+          zone: obj.zone,
+          origin: obj.origin_fk,
+          date: obj.createdAt,
+        })
       }
 
-      let json = JSON.stringify(rows)
-      sessionStorage.setItem('filtered_borrowings', json)
+      return responseHandler('success', notifications)
+    })
+    .catch((error) => responseHandler('error', error))
+}
 
-      return responseHandler('success', rows)
+export function getPublic(zone, responseHandler) {
+  let params =
+    '?zone=' +
+    zone
+
+  // Make the request if there is nothing stored
+  let url = HOST + ALERT_PUBLIC_LIST + params
+  fetch(url, {
+    method: 'GET',
+    headers: {
+      token: sessionStorage.getItem('token'),
+    },
+  })
+    .then(handleErrors)
+    .then((res) => res.json())
+    .then((response) => {
+      let validation = validateResponse(response)
+      if (validation != null) {
+        return responseHandler('error', validation)
+      }
+
+      return responseHandler('success', response)
     })
     .catch((error) => responseHandler('error', error))
 }
@@ -331,33 +259,6 @@ export function getElements(key, path, responseHandler) {
       sessionStorage.setItem(key, json)
 
       return responseHandler('success', rows)
-    })
-    .catch((error) => responseHandler('error', error))
-}
-
-export function getFile(path, responseHandler) {
-  // Path should have id as param
-  let url = HOST + path
-
-  fetch(url, {
-    method: 'GET',
-    headers: {
-      token: sessionStorage.getItem('token'),
-    },
-  })
-    .then(handleErrors)
-    .then((response) => {
-      if (response.hasOwnProperty('error')) {
-        return responseHandler('error', response.error)
-      }
-
-      return response
-    })
-    .then((response) => {
-      return response.blob()
-    })
-    .then((blob) => {
-      return responseHandler('success', blob)
     })
     .catch((error) => responseHandler('error', error))
 }

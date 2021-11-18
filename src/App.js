@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import LoginView from './Components/Login/LoginView'
 import MenuView from './Components/Menu/MenuView'
 import RecoverPassword from './Components/Login/RecoverPassword'
+import RegisterView from './Components/Login/RegisterView'
 import './App.css'
 
 
@@ -30,6 +31,8 @@ class App extends Component {
       return <MenuView changeView={this.handleChange} />
     } else if (this.state.component == 'Recover') {
       return <RecoverPassword changeView={this.handleChange} />
+    } else if (this.state.component == 'Register') {
+      return <RegisterView changeView={this.handleChange} />
     }
 
     return <LoginView changeView={this.handleChange} />

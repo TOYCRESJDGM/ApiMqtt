@@ -1,7 +1,7 @@
 /* COLORS */
 :root {
-  --scout-red: #b31d1d;
-  --scout-red-hover: #db2424;
+  --scout-red: #4d4949;
+  --scout-red-hover: #4d4949;
   --title-gray: #646777;
   --body-gray: #999999;
   --background: #f2f4f7;
@@ -92,6 +92,16 @@ ul li::before {
   flex-direction: column;
 }
 
+.global-comp-form-card-container {
+  width: -webkit-fill-available;
+  padding: 20px 15px;
+  background-color: var(--white);
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-content: flex-start;
+}
+
 .global-form-group {
   width: -webkit-fill-available;
   display: flex;
@@ -121,6 +131,17 @@ ul li::before {
 .global-form-input {
   height: 32px;
   width: 100%;
+  padding: 0px 10px;
+  outline: none;
+  color: var(--body-gray);
+  font-size: 12px;
+  border: 1px solid var(--background);
+  transition: border 0.3s;
+}
+
+.global-form-input-all {
+  height: 32px;
+  width: 50px;
   padding: 0px 10px;
   outline: none;
   color: var(--body-gray);

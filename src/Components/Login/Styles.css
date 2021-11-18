@@ -33,6 +33,7 @@
   height: 40px;
   width: 100%;
   border-radius: 5px;
+  margin-bottom: 20px;
   color: var(--white);
   font-size: 14px;
   outline: none;
@@ -115,6 +116,38 @@ hr {
 }
 
 
+.rg-container {
+  width: 100vw;
+  height: 100vh;
+  min-width: 546px;
+  min-height: 680px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--background);
+}
+
+.rg-card {
+  width: 520px;
+  height: 620px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--white);
+}
+
+.rg-header {
+  width: 100%;
+  height: 48px;
+  padding-left: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  border-left: var(--scout-red) solid 5px;
+}
+
 /* Header del formulario for Recover Password */
 
 
@@ -185,7 +218,7 @@ hr {
 }
 
 .progressbar__option.active:before, .progressbar__option.active:after {
-  background-color: #b31d1d;
+  background-color: #4d4949;
 }
 
 /* header del formulario */
@@ -196,7 +229,7 @@ hr {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  border-left: #b31d1d solid 5px;
+  border-left: #4d4949 solid 5px;
 }
 
 .form-register__header {
@@ -214,7 +247,7 @@ hr {
 
 .global-text-mandatory {
   font-size: 12px;
-  color: #b31d1d;
+  color: #4d4949;
 }
 
 .recp-form-img-container {
@@ -300,14 +333,14 @@ hr {
   color: #ffffff;
   font-size: 14px;
   outline: none;
-  background-color: #b31d1d;
+  background-color: #4d4949;
   border: none;
   cursor: pointer;
   transition: all 0.3s;
 }
 
 .step__button:hover {
-  background-color: #db2424;
+  background-color: #4d4949;
 }
 
 .step__button_back {
@@ -320,7 +353,7 @@ hr {
   font-size: 14px;
   outline: none;
   background-color: white;
-  border: 1px solid #db2424;
+  border: 1px solid #4d4949;
   cursor: pointer;
   margin-left: 15px;
   transition: all 0.3s;
